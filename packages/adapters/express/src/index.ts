@@ -14,13 +14,15 @@ export * from "@linekit/core";
 import { createWebhookMiddleware as coreCreateWebhookMiddleware } from "@linekit/core";
 
 export function lineMiddleware(config: { channelSecret: string }) {
+    // Create middleware instance once during initialization, not per request
+    const middleware = coreCreateWebhookMiddleware(config);
+
     // linekit core middleware signature matches (req: IncomingMessage, res: ServerResponse, next: ...)
     // Express Req/Res extend these.
     return (req: Request, res: Response, next: NextFunction) => {
         // Ensure rawBody is available if not handled by body-parser
         // If the user uses a body parser that swallows stream, core middleware might fail.
         // We can add logic here to buffer it if needed, or documentation.
-        const middleware = coreCreateWebhookMiddleware(config);
         return middleware(req, res, next);
     };
 }

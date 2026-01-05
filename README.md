@@ -85,6 +85,25 @@ if (login.validateState(savedState, returnedState)) {
 - **@linekit/login**: OAuth flow, ID Token verification, CSRF state helpers.
 - **@linekit/express**: Adapter for Express.js.
 
+## LINE API Compatibility
+
+This toolkit is built against the following LINE API versions:
+
+| API | Version | Reference |
+|-----|---------|-----------|
+| Messaging API | v2 | [docs](https://developers.line.biz/en/reference/messaging-api/) |
+| LINE Login | v2.1 (OAuth 2.1) | [docs](https://developers.line.biz/en/reference/line-login/) |
+| LIFF | v2 | [docs](https://developers.line.biz/en/reference/liff/) |
+
+**Endpoint Base URLs:**
+- Messaging API: `https://api.line.me/v2/bot/`
+- LINE Login: `https://api.line.me/oauth2/v2.1/`
+- Authorization: `https://access.line.me/oauth2/v2.1/`
+
+**API Limits (enforced by linekit):**
+- Maximum 5 messages per request
+- Maximum 500 recipients per multicast request
+
 ## Documentation
 
 📚 **[Full Tutorials & API Reference](https://pcircle-ai.github.io/linekit/)** - Comprehensive guides with flow diagrams

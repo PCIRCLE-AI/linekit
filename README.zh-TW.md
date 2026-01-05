@@ -85,6 +85,25 @@ if (login.validateState(savedState, returnedState)) {
 - **@linekit/login**: OAuth 流程、ID Token 驗證、CSRF state 工具。
 - **@linekit/express**: Express.js 的適配器。
 
+## LINE API 相容性
+
+本工具包基於以下 LINE API 版本開發：
+
+| API | 版本 | 參考文件 |
+|-----|------|---------|
+| Messaging API | v2 | [文件](https://developers.line.biz/en/reference/messaging-api/) |
+| LINE Login | v2.1 (OAuth 2.1) | [文件](https://developers.line.biz/en/reference/line-login/) |
+| LIFF | v2 | [文件](https://developers.line.biz/en/reference/liff/) |
+
+**API 端點 Base URL：**
+- Messaging API: `https://api.line.me/v2/bot/`
+- LINE Login: `https://api.line.me/oauth2/v2.1/`
+- 授權: `https://access.line.me/oauth2/v2.1/`
+
+**API 限制（由 linekit 強制執行）：**
+- 每次請求最多 5 則訊息
+- 每次 multicast 請求最多 500 位收件人
+
 ## 文件
 
 📚 **[完整教學與 API 參考](https://pcircle-ai.github.io/linekit/index-zh.html)** - 附流程圖的詳細指南

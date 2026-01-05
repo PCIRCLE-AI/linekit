@@ -43,22 +43,40 @@ describe('webhook middleware', () => {
     it('should fail without rawBody', async () => {
         const req: any = {
             headers: { 'x-line-signature': 'signature' },
-            // no rawBody
-            body: {}
+            // no rawBody - stream not readable
+            body: {},
+            readable: false
         };
         const res: any = {
+            statusCode: 200,
             end: vi.fn()
-        }
+        };
         const next = vi.fn();
-
-        // Mock console.warn to suppress output
-        const spy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
         await middleware(req, res, next);
 
-        expect(spy).toHaveBeenCalled();
-        expect(next).toHaveBeenCalled(); // It calls next() in the warning path currently implemented
+        // When rawBody is not available, middleware returns 401
+        expect(next).not.toHaveBeenCalled();
+        expect(res.statusCode).toBe(401);
+        expect(res.end).toHaveBeenCalledWith('Signature validation failed');
+    });
 
-        spy.mockRestore();
+    it('should fail without signature header', async () => {
+        const body = JSON.stringify({ events: [] });
+        const req: any = {
+            rawBody: body,
+            headers: {}  // missing x-line-signature
+        };
+        const res: any = {
+            statusCode: 200,
+            end: vi.fn()
+        };
+        const next = vi.fn();
+
+        await middleware(req, res, next);
+
+        expect(next).not.toHaveBeenCalled();
+        expect(res.statusCode).toBe(401);
+        expect(res.end).toHaveBeenCalledWith('Signature validation failed');
     });
 });

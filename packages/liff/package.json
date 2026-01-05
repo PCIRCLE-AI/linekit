@@ -1,6 +1,7 @@
 {
-    "name": "@linekit/express",
-    "version": "0.1.0",
+    "name": "@linekit/liff",
+    "version": "0.0.1",
+    "description": "LINE LIFF (LINE Front-end Framework) SDK - Coming Soon",
     "type": "module",
     "main": "./dist/index.cjs",
     "module": "./dist/index.js",
@@ -17,7 +18,9 @@
             }
         }
     },
-    "files": ["dist"],
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
@@ -25,20 +28,15 @@
     },
     "keywords": [
         "line",
-        "express",
-        "adapter"
+        "liff",
+        "sdk",
+        "frontend"
     ],
     "author": "",
     "license": "MIT",
-    "dependencies": {
-        "@linekit/core": "workspace:*"
-    },
-    "peerDependencies": {
-        "express": "^4.0.0"
-    },
     "devDependencies": {
         "tsup": "^8.0.0",
-        "@types/express": "^4.0.0",
+        "typescript": "^5.0.0",
         "vitest": "^2.1.0"
     }
 }

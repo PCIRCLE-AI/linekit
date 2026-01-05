@@ -79,7 +79,7 @@ export async function issueAccessToken(
     if (!res.ok) {
         const errorText = await res.text();
         throw new LineLoginError(
-            `Failed to issue access token: ${res.statusText}`,
+            `Failed to issue access token: ${res.statusText} - ${errorText}`,
             "TOKEN_ISSUE_FAILED",
             res.status
         );

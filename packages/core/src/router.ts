@@ -13,13 +13,13 @@ export interface RouterOptions {
 }
 
 // Minimal request/response interfaces for framework compatibility
-interface WebhookRequest {
+export interface WebhookRequest {
     body?: {
         events?: WebhookEvent[];
     };
 }
 
-interface WebhookResponse {
+export interface WebhookResponse {
     status?: (code: number) => WebhookResponse;
     end?: () => void;
 }

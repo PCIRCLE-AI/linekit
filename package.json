@@ -1,19 +1,16 @@
 {
   "name": "linekit-monorepo",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "packages/adapters/*",
-    "examples/*"
-  ],
+  "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "lint": "npm run lint --workspaces"
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
     "tsup": "^8.0.0",
-    "@types/node": "^18.0.0"
+    "@types/node": "^18.0.0",
+    "vitest": "^2.1.0"
   }
 }

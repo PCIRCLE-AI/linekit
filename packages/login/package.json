@@ -1,13 +1,27 @@
 {
     "name": "@linekit/login",
     "version": "0.1.0",
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
+    },
+    "files": ["dist"],
     "scripts": {
-        "build": "npm exec tsup src/index.ts --format cjs,esm --dts",
-        "dev": "npm exec tsup src/index.ts --format cjs,esm --dts --watch",
-        "test": "npm exec vitest run"
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "test": "vitest run"
     },
     "keywords": [
         "line",

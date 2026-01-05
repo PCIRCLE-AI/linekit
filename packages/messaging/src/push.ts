@@ -1,19 +1,6 @@
 import { lineRequest, LineClientError } from "./client.js";
-import { Message } from "./reply.js";
-
-const MAX_MESSAGES_PER_REQUEST = 5;
-
-function validateMessages(messages: Message[]): void {
-    if (!Array.isArray(messages)) {
-        throw new LineClientError("messages must be an array");
-    }
-    if (messages.length === 0) {
-        throw new LineClientError("At least one message is required");
-    }
-    if (messages.length > MAX_MESSAGES_PER_REQUEST) {
-        throw new LineClientError(`Maximum ${MAX_MESSAGES_PER_REQUEST} messages per request`);
-    }
-}
+import { validateMessages } from "./validation.js";
+import type { Message } from "./types.js";
 
 export async function pushMessage(token: string, to: string, messages: Message[]) {
     if (!token) throw new LineClientError("token is required");
