@@ -1,0 +1,28 @@
+{
+    "name": "@linekit/express",
+    "version": "0.1.0",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "build": "npm exec tsup src/index.ts --format cjs,esm --dts",
+        "dev": "npm exec tsup src/index.ts --format cjs,esm --dts --watch"
+    },
+    "keywords": [
+        "line",
+        "express",
+        "adapter"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@linekit/core": "workspace:*"
+    },
+    "peerDependencies": {
+        "express": "^4.0.0"
+    },
+    "devDependencies": {
+        "tsup": "^8.0.0",
+        "@types/express": "^4.0.0"
+    }
+}

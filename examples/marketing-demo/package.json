@@ -1,0 +1,15 @@
+{
+    "name": "marketing-demo",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "ts-node src/index.ts"
+    },
+    "dependencies": {
+        "@linekit/messaging": "workspace:*"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.1",
+        "@types/node": "^18.0.0"
+    }
+}

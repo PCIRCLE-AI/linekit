@@ -1,0 +1,19 @@
+{
+  "name": "linekit-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "packages/adapters/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "tsup": "^8.0.0",
+    "@types/node": "^18.0.0"
+  }
+}
