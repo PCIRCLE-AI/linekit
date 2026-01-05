@@ -113,6 +113,19 @@
             color: var(--gray);
             font-size: 0.9rem;
         }
+        .disclaimer {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+        .disclaimer a {
+            color: #d97706;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +135,10 @@
     </div>
 
     <div class="container">
+        <div class="disclaimer">
+            <strong>Note:</strong> This is an unofficial, third-party toolkit developed by <a href="https://pcircle.ai">PCIRCLE.AI</a>.
+            It is not affiliated with or endorsed by LINE Corporation.
+        </div>
         <header>
             <h1>linekit</h1>
             <div class="subtitle">A modular, framework-agnostic toolkit for LINE services.</div>
@@ -167,7 +184,7 @@ app.post("/webhook",
         </section>
 
         <footer>
-            <p>MIT License &copy; 2024 linekit</p>
+            <p>MIT License &copy; 2024 <a href="https://pcircle.ai" style="color: var(--primary);">PCIRCLE.AI</a></p>
         </footer>
     </div>
 </body>

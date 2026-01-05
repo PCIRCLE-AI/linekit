@@ -133,6 +133,21 @@
             color: var(--gray);
             font-size: 0.9rem;
         }
+
+        .disclaimer {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: #92400e;
+        }
+
+        .disclaimer a {
+            color: #d97706;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -143,6 +158,10 @@
     </div>
 
     <div class="container">
+        <div class="disclaimer">
+            <strong>注意：</strong>這是由 <a href="https://pcircle.ai">PCIRCLE.AI</a> 開發的非官方第三方工具包，
+            與 LINE Corporation 無任何隸屬或背書關係。
+        </div>
         <header>
             <h1>linekit</h1>
             <div class="subtitle">模組化、跨框架的 LINE 服務開發工具包。</div>
@@ -188,7 +207,7 @@ app.post("/webhook",
         </section>
 
         <footer>
-            <p>MIT License &copy; 2024 linekit</p>
+            <p>MIT License &copy; 2024 <a href="https://pcircle.ai" style="color: var(--primary);">PCIRCLE.AI</a></p>
         </footer>
     </div>
 </body>
