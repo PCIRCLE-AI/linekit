@@ -26,3 +26,15 @@ export function lineMiddleware(config: { channelSecret: string }) {
         return middleware(req, res, next);
     };
 }
+
+/**
+ * Helper function to capture raw body for signature verification.
+ * Usage with express.json():
+ * app.use(express.json({ verify: verifyExpressRawBody }));
+ */
+export function verifyExpressRawBody(req: any, _res: any, buf: Buffer, encoding: string) {
+    if (buf && buf.length) {
+        // req.rawBody is expected by lineMiddleware
+        req.rawBody = buf.toString((encoding as BufferEncoding) || 'utf8');
+    }
+}

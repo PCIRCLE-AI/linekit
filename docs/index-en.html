@@ -1,303 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>linekit - Modern LINE Messaging API & Login Toolkit for TypeScript</title>
-    <meta name="description" content="linekit is a TypeScript toolkit for building LINE chatbots, implementing LINE Login OAuth 2.1, and managing Rich Menus. Features timing-safe webhook verification, CSRF protection, and works with Express.js, Fastify, or any Node.js framework.">
-    <meta name="keywords" content="LINE API, LINE Messaging API, LINE Login, LINE bot, LINE chatbot, LIFF, TypeScript, Node.js, Express, Fastify, webhook, OAuth 2.1, Rich Menu, push message, reply message">
-    <meta name="author" content="pcircle.ai">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://pcircle-ai.github.io/linekit/">
-    <link rel="alternate" hreflang="en" href="https://pcircle-ai.github.io/linekit/">
-    <link rel="alternate" hreflang="zh-TW" href="https://pcircle-ai.github.io/linekit/index-zh.html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>linekit - Modern LINE Messaging API & Login Toolkit for TypeScript</title>
+  <meta name="description"
+    content="linekit is a TypeScript toolkit for building LINE chatbots, implementing LINE Login OAuth 2.1, and managing Rich Menus. Features timing-safe webhook verification, CSRF protection, and works with Express.js, Fastify, or any Node.js framework.">
+  <meta name="keywords"
+    content="LINE API, LINE Messaging API, LINE Login, LINE bot, LINE chatbot, LIFF, TypeScript, Node.js, Express, Fastify, webhook, OAuth 2.1, Rich Menu, push message, reply message">
+  <meta name="author" content="pcircle.ai">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://pcircle-ai.github.io/linekit/">
+  <link rel="alternate" hreflang="en" href="https://pcircle-ai.github.io/linekit/">
+  <link rel="alternate" hreflang="zh-TW" href="https://pcircle-ai.github.io/linekit/index-zh.html">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://pcircle-ai.github.io/linekit/">
-    <meta property="og:title" content="linekit - Modern LINE Messaging API & Login Toolkit">
-    <meta property="og:description" content="A modular, type-safe toolkit for LINE Messaging API, LINE Login, and LIFF. Build LINE bots with TypeScript.">
-    <meta property="og:image" content="https://pcircle-ai.github.io/linekit/og-image.png">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pcircle-ai.github.io/linekit/">
+  <meta property="og:title" content="linekit - Modern LINE Messaging API & Login Toolkit">
+  <meta property="og:description"
+    content="A modular, type-safe toolkit for LINE Messaging API, LINE Login, and LIFF. Build LINE bots with TypeScript.">
+  <meta property="og:image" content="https://pcircle-ai.github.io/linekit/og-image.png">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://pcircle-ai.github.io/linekit/">
-    <meta name="twitter:title" content="linekit - Modern LINE Messaging API & Login Toolkit">
-    <meta name="twitter:description" content="A modular, type-safe toolkit for LINE Messaging API, LINE Login, and LIFF. Build LINE bots with TypeScript.">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://pcircle-ai.github.io/linekit/">
+  <meta name="twitter:title" content="linekit - Modern LINE Messaging API & Login Toolkit">
+  <meta name="twitter:description"
+    content="A modular, type-safe toolkit for LINE Messaging API, LINE Login, and LIFF. Build LINE bots with TypeScript.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #06C755;
-            --primary-dark: #00B900;
-            --text: #111827;
-            --bg: #ffffff;
-            --gray: #6B7280;
-            --gray-light: #9CA3AF;
-            --code-bg: #1f2937;
-            --code-text: #e5e7eb;
-            --card-bg: #f9fafb;
-            --border: #e5e7eb;
-        }
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            color: var(--text);
-            line-height: 1.7;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 4rem 0 2rem; }
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #06C755 0%, #00B900 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        h2 { color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: 3rem; }
-        h3 { color: var(--text); margin-top: 2rem; }
-        .subtitle { font-size: 1.4rem; color: var(--gray); margin-bottom: 2rem; }
-        .buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 9999px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: inline-block;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3); }
-        .btn-outline { border: 2px solid var(--gray); color: var(--text); }
-        .btn-outline:hover { border-color: var(--text); }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-        .feature-card {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-        }
-        .feature-title { font-weight: 800; margin-bottom: 0.5rem; color: var(--primary); }
-        pre {
-            background: var(--code-bg);
-            color: var(--code-text);
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            font-size: 0.85rem;
-            font-family: 'Fira Code', monospace;
-            line-height: 1.5;
-        }
-        code {
-            font-family: 'Fira Code', monospace;
-            background: #e5e7eb;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-        pre code { background: none; padding: 0; }
-        .lang-switch { position: absolute; top: 1rem; right: 1rem; }
-        .lang-switch a { color: var(--gray); text-decoration: none; margin-left: 1rem; font-weight: 600; }
-        .lang-switch a.active { color: var(--primary); }
-        footer { text-align: center; margin-top: 4rem; padding: 2rem; color: var(--gray); font-size: 0.9rem; border-top: 1px solid var(--border); }
-        .disclaimer {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            color: #92400e;
-        }
-        .disclaimer a { color: #d97706; font-weight: 600; }
-        .note {
-            background: #ecfdf5;
-            border: 1px solid #10b981;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: #065f46;
-        }
-        .warning {
-            background: #fef2f2;
-            border: 1px solid #ef4444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: #991b1b;
-        }
-        .toc {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-        .toc h3 { margin-top: 0; }
-        .toc ul { margin: 0; padding-left: 1.5rem; }
-        .toc li { margin: 0.5rem 0; }
-        .toc a { color: var(--primary); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        .package-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .package-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-        .package-card h4 { margin: 0 0 0.5rem; color: var(--primary); }
-        .package-card p { margin: 0; font-size: 0.9rem; color: var(--gray); }
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .subtitle { font-size: 1.1rem; }
-            pre { font-size: 0.75rem; padding: 1rem; }
-        }
-        .comment { color: #6b7280; }
-        .keyword { color: #c084fc; }
-        .string { color: #34d399; }
-        .function { color: #60a5fa; }
-        /* Flow diagram styles */
-        .flow-diagram {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-        }
-        .flow-diagram h4 {
-            margin: 0 0 1rem;
-            color: var(--primary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .flow-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-        }
-        .flow-box {
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            text-align: center;
-            min-width: 80px;
-        }
-        .flow-box.highlight {
-            background: var(--primary);
-            color: white;
-        }
-        .flow-box.secondary {
-            border-color: var(--gray);
-            background: #f9fafb;
-        }
-        .flow-arrow {
-            color: var(--gray);
-            font-size: 1.2rem;
-        }
-        .flow-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-            text-align: center;
-            margin-top: 0.25rem;
-        }
-        .flow-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #06C755;
+      --primary-dark: #00B900;
+      --text: #111827;
+      --bg: #ffffff;
+      --gray: #6B7280;
+      --gray-light: #9CA3AF;
+      --code-bg: #1f2937;
+      --code-text: #e5e7eb;
+      --card-bg: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 0 2rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #06C755 0%, #00B900 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-top: 3rem;
+    }
+
+    h3 {
+      color: var(--text);
+      margin-top: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--gray);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+    }
+
+    .feature-title {
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      font-family: 'Fira Code', monospace;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: #e5e7eb;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .lang-switch {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .lang-switch a {
+      color: var(--gray);
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: 600;
+    }
+
+    .lang-switch a.active {
+      color: var(--primary);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 2rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .disclaimer {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: #92400e;
+    }
+
+    .disclaimer a {
+      color: #d97706;
+      font-weight: 600;
+    }
+
+    .note {
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #065f46;
+    }
+
+    .warning {
+      background: #fef2f2;
+      border: 1px solid #ef4444;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #991b1b;
+    }
+
+    .toc {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .toc li {
+      margin: 0.5rem 0;
+    }
+
+    .toc a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .package-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .package-card h4 {
+      margin: 0 0 0.5rem;
+      color: var(--primary);
+    }
+
+    .package-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      pre {
+        font-size: 0.75rem;
+        padding: 1rem;
+      }
+    }
+
+    .comment {
+      color: #6b7280;
+    }
+
+    .keyword {
+      color: #c084fc;
+    }
+
+    .string {
+      color: #34d399;
+    }
+
+    .function {
+      color: #60a5fa;
+    }
+
+    /* Flow diagram styles */
+    .flow-diagram {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .flow-diagram h4 {
+      margin: 0 0 1rem;
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+    }
+
+    .flow-box {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .flow-box.highlight {
+      background: var(--primary);
+      color: white;
+    }
+
+    .flow-box.secondary {
+      border-color: var(--gray);
+      background: #f9fafb;
+    }
+
+    .flow-arrow {
+      color: var(--gray);
+      font-size: 1.2rem;
+    }
+
+    .flow-label {
+      font-size: 0.75rem;
+      color: var(--gray);
+      text-align: center;
+      margin-top: 0.25rem;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="lang-switch">
-        <a href="index.html">繁體中文</a>
-        <a href="index-en.html" class="active">English</a>
-    </div>
+  <div class="lang-switch">
+    <a href="index.html">繁體中文</a>
+    <a href="index-en.html" class="active">English</a>
+  </div>
 
-    <div class="container">
-        <header>
-            <h1>linekit</h1>
-            <div class="subtitle">A modular, type-safe, secure toolkit for LINE services.</div>
-            <div class="buttons">
-                <a href="#get-started" class="btn btn-primary">Get Started</a>
-                <a href="#tutorials" class="btn btn-primary">Tutorials</a>
-                <a href="https://github.com/PCIRCLE-AI/linekit" class="btn btn-outline">GitHub</a>
-            </div>
-        </header>
+  <div class="container">
+    <header>
+      <h1>linekit</h1>
+      <div class="subtitle">A modular, type-safe, secure toolkit for LINE services.</div>
+      <div class="buttons">
+        <a href="#get-started" class="btn btn-primary">Get Started</a>
+        <a href="#tutorials" class="btn btn-primary">Tutorials</a>
+        <a href="https://github.com/PCIRCLE-AI/linekit" class="btn btn-outline">GitHub</a>
+      </div>
+    </header>
 
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-title">Modular</div>
-                <div>Install only what you need: Core, Messaging, Login, or Adapters.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">Type-Safe</div>
-                <div>Built with TypeScript. Complete type definitions included.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">Secure</div>
-                <div>Timing-safe signature verification, input validation, CSRF protection.</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">Framework Agnostic</div>
-                <div>Works with Express, Fastify, Next.js, or standard Fetch API.</div>
-            </div>
-        </section>
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-title">Modular</div>
+        <div>Install only what you need: Core, Messaging, Login, or Adapters.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Type-Safe</div>
+        <div>Built with TypeScript. Complete type definitions included.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Secure</div>
+        <div>Timing-safe signature verification, input validation, CSRF protection.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">Framework Agnostic</div>
+        <div>Works with Express, Fastify, Next.js, or standard Fetch API.</div>
+      </div>
+    </section>
 
-        <nav class="toc">
-            <h3>Table of Contents</h3>
-            <ul>
-                <li><a href="#get-started">Getting Started</a></li>
-                <li><a href="#packages">Packages Overview</a></li>
-                <li><a href="#tutorials">Tutorials</a>
-                    <ul>
-                        <li><a href="#tutorial-bot">Building a LINE Bot</a></li>
-                        <li><a href="#tutorial-login">LINE Login Integration</a></li>
-                        <li><a href="#tutorial-messages">Sending Different Message Types</a></li>
-                        <li><a href="#tutorial-richmenu">Rich Menu Management</a></li>
-                        <li><a href="#tutorial-errors">Error Handling</a></li>
-                    </ul>
-                </li>
-                <li><a href="#api-reference">API Reference</a></li>
-                <li><a href="#security">Security Features</a></li>
-            </ul>
-        </nav>
+    <nav class="toc">
+      <h3>Table of Contents</h3>
+      <ul>
+        <li><a href="#get-started">Getting Started</a></li>
+        <li><a href="#packages">Packages Overview</a></li>
+        <li><a href="#tutorials">Tutorials</a>
+          <ul>
+            <li><a href="#tutorial-bot">Building a LINE Bot</a></li>
+            <li><a href="#tutorial-login">LINE Login Integration</a></li>
+            <li><a href="#tutorial-messages">Sending Different Message Types</a></li>
+            <li><a href="#tutorial-richmenu">Rich Menu Management</a></li>
+            <li><a href="#tutorial-errors">Error Handling</a></li>
+          </ul>
+        </li>
+        <li><a href="#api-reference">API Reference</a></li>
+        <li><a href="#security">Security Features</a></li>
+      </ul>
+    </nav>
 
-        <!-- Getting Started -->
-        <section id="get-started">
-            <h2>Getting Started</h2>
+    <!-- Getting Started -->
+    <section id="get-started">
+      <h2>Getting Started</h2>
 
-            <h3>Prerequisites</h3>
-            <ul>
-                <li>Node.js 18 or higher</li>
-                <li>A LINE Developers account</li>
-                <li>A Messaging API channel (for bots) or LINE Login channel</li>
-            </ul>
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Node.js 18 or higher</li>
+        <li>A LINE Developers account</li>
+        <li>A Messaging API channel (for bots) or LINE Login channel</li>
+      </ul>
 
-            <h3>Installation</h3>
-            <pre><code><span class="comment"># For LINE Bot development</span>
+      <h3>Installation</h3>
+      <pre><code><span class="comment"># For LINE Bot development</span>
 npm install @linekit/core @linekit/messaging @linekit/express
 
 <span class="comment"># For LINE Login</span>
@@ -306,8 +466,8 @@ npm install @linekit/login
 <span class="comment"># Or install everything</span>
 npm install @linekit/core @linekit/messaging @linekit/login @linekit/express</code></pre>
 
-            <h3>Quick Start: Echo Bot</h3>
-            <pre><code><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
+      <h3>Quick Start: Echo Bot</h3>
+      <pre><code><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
 <span class="keyword">import</span> { createLineApp } <span class="keyword">from</span> <span class="string">"@linekit/core"</span>;
 <span class="keyword">import</span> { lineMiddleware } <span class="keyword">from</span> <span class="string">"@linekit/express"</span>;
 
@@ -332,130 +492,138 @@ app.<span class="function">post</span>(<span class="string">"/webhook"</span>,
 );
 
 app.<span class="function">listen</span>(3000, () => console.<span class="function">log</span>(<span class="string">"Bot running on port 3000"</span>));</code></pre>
-        </section>
+    </section>
 
-        <!-- Packages -->
-        <section id="packages">
-            <h2>Packages Overview</h2>
-            <div class="package-grid">
-                <div class="package-card">
-                    <h4>@linekit/core</h4>
-                    <p>Webhook verification with timing-safe signatures, Context for easy replies, Router with error handling.</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/messaging</h4>
-                    <p>Full Messaging API: reply, push, multicast, broadcast. Rich Menu management. Input validation included.</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/login</h4>
-                    <p>OAuth 2.1 flow, ID Token verification, CSRF state helpers for secure authentication.</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/express</h4>
-                    <p>Express.js adapter with automatic body parsing and signature verification middleware.</p>
-                </div>
+    <!-- Packages -->
+    <section id="packages">
+      <h2>Packages Overview</h2>
+      <div class="package-grid">
+        <div class="package-card">
+          <h4>@linekit/core</h4>
+          <p>Webhook verification with timing-safe signatures, Context for easy replies, Router with error handling.</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/messaging</h4>
+          <p>Full Messaging API: reply, push, multicast, broadcast. Rich Menu management. Input validation included.</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/login</h4>
+          <p>OAuth 2.1 flow, ID Token verification, CSRF state helpers for secure authentication.</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/express</h4>
+          <p>Express.js adapter with automatic body parsing and signature verification middleware.</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/liff</h4>
+          <p>LIFF management API client (CRUD) and type definitions for building Line Front-end Framework apps.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LINE API Compatibility -->
+    <section id="api-compatibility">
+      <h2>LINE API Compatibility</h2>
+      <p>linekit is built against the following LINE API versions:</p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
+            <th style="padding: 0.75rem; text-align: left;">API</th>
+            <th style="padding: 0.75rem; text-align: left;">Version</th>
+            <th style="padding: 0.75rem; text-align: left;">Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 0.75rem;">Messaging API</td>
+            <td style="padding: 0.75rem;"><code>v2</code></td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/"
+                style="color: var(--primary);">Documentation</a></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 0.75rem;">LINE Login</td>
+            <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/"
+                style="color: var(--primary);">Documentation</a></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 0.75rem;">LIFF</td>
+            <td style="padding: 0.75rem;"><code>v2</code></td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/"
+                style="color: var(--primary);">Documentation</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Endpoint Base URLs</h3>
+      <ul>
+        <li><strong>Messaging API:</strong> <code>https://api.line.me/v2/bot/</code></li>
+        <li><strong>LINE Login:</strong> <code>https://api.line.me/oauth2/v2.1/</code></li>
+        <li><strong>Authorization:</strong> <code>https://access.line.me/oauth2/v2.1/</code></li>
+      </ul>
+
+      <h3>API Limits (enforced by linekit)</h3>
+      <div class="package-grid">
+        <div class="package-card">
+          <h4>Messages per Request</h4>
+          <p><strong>Maximum 5</strong> message objects per reply/push/multicast request.</p>
+        </div>
+        <div class="package-card">
+          <h4>Multicast Recipients</h4>
+          <p><strong>Maximum 500</strong> user IDs per multicast request.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tutorials -->
+    <section id="tutorials">
+      <h2>Tutorials</h2>
+
+      <!-- Tutorial: Bot -->
+      <article id="tutorial-bot">
+        <h3>1. Building a LINE Bot</h3>
+        <p>This tutorial covers creating a fully-featured LINE Bot that responds to messages, follows, and postbacks.
+        </p>
+
+        <div class="flow-diagram">
+          <h4>How Webhook Works</h4>
+          <div class="flow-row">
+            <div class="flow-step">
+              <div class="flow-box">User</div>
+              <div class="flow-label">sends message</div>
             </div>
-        </section>
-
-        <!-- LINE API Compatibility -->
-        <section id="api-compatibility">
-            <h2>LINE API Compatibility</h2>
-            <p>linekit is built against the following LINE API versions:</p>
-
-            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
-                <thead>
-                    <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
-                        <th style="padding: 0.75rem; text-align: left;">API</th>
-                        <th style="padding: 0.75rem; text-align: left;">Version</th>
-                        <th style="padding: 0.75rem; text-align: left;">Reference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.75rem;">Messaging API</td>
-                        <td style="padding: 0.75rem;"><code>v2</code></td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/" style="color: var(--primary);">Documentation</a></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.75rem;">LINE Login</td>
-                        <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/" style="color: var(--primary);">Documentation</a></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.75rem;">LIFF</td>
-                        <td style="padding: 0.75rem;"><code>v2</code></td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/" style="color: var(--primary);">Documentation</a></td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Endpoint Base URLs</h3>
-            <ul>
-                <li><strong>Messaging API:</strong> <code>https://api.line.me/v2/bot/</code></li>
-                <li><strong>LINE Login:</strong> <code>https://api.line.me/oauth2/v2.1/</code></li>
-                <li><strong>Authorization:</strong> <code>https://access.line.me/oauth2/v2.1/</code></li>
-            </ul>
-
-            <h3>API Limits (enforced by linekit)</h3>
-            <div class="package-grid">
-                <div class="package-card">
-                    <h4>Messages per Request</h4>
-                    <p><strong>Maximum 5</strong> message objects per reply/push/multicast request.</p>
-                </div>
-                <div class="package-card">
-                    <h4>Multicast Recipients</h4>
-                    <p><strong>Maximum 500</strong> user IDs per multicast request.</p>
-                </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE Platform</div>
+              <div class="flow-label">receives &amp; forwards</div>
             </div>
-        </section>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">Your Server</div>
+              <div class="flow-label">linekit processes</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE API</div>
+              <div class="flow-label">sends reply</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box">User</div>
+              <div class="flow-label">receives reply</div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Tutorials -->
-        <section id="tutorials">
-            <h2>Tutorials</h2>
-
-            <!-- Tutorial: Bot -->
-            <article id="tutorial-bot">
-                <h3>1. Building a LINE Bot</h3>
-                <p>This tutorial covers creating a fully-featured LINE Bot that responds to messages, follows, and postbacks.</p>
-
-                <div class="flow-diagram">
-                    <h4>How Webhook Works</h4>
-                    <div class="flow-row">
-                        <div class="flow-step">
-                            <div class="flow-box">User</div>
-                            <div class="flow-label">sends message</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE Platform</div>
-                            <div class="flow-label">receives &amp; forwards</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">Your Server</div>
-                            <div class="flow-label">linekit processes</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE API</div>
-                            <div class="flow-label">sends reply</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box">User</div>
-                            <div class="flow-label">receives reply</div>
-                        </div>
-                    </div>
-                </div>
-
-                <h4>Step 1: Set up your project</h4>
-                <pre><code>mkdir my-line-bot && cd my-line-bot
+        <h4>Step 1: Set up your project</h4>
+        <pre><code>mkdir my-line-bot && cd my-line-bot
 npm init -y
 npm install express @linekit/core @linekit/messaging @linekit/express
 npm install -D typescript @types/node @types/express tsx</code></pre>
 
-                <h4>Step 2: Create the bot</h4>
-                <pre><code><span class="comment">// src/index.ts</span>
+        <h4>Step 2: Create the bot</h4>
+        <pre><code><span class="comment">// src/index.ts</span>
 <span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
 <span class="keyword">import</span> { createLineApp } <span class="keyword">from</span> <span class="string">"@linekit/core"</span>;
 <span class="keyword">import</span> { lineMiddleware } <span class="keyword">from</span> <span class="string">"@linekit/express"</span>;
@@ -514,61 +682,61 @@ app.<span class="function">listen</span>(3000, () => {
   console.<span class="function">log</span>(<span class="string">"Bot running on http://localhost:3000"</span>);
 });</code></pre>
 
-                <h4>Step 3: Run your bot</h4>
-                <pre><code><span class="comment"># Set environment variables</span>
+        <h4>Step 3: Run your bot</h4>
+        <pre><code><span class="comment"># Set environment variables</span>
 export CHANNEL_SECRET="your-channel-secret"
 export CHANNEL_ACCESS_TOKEN="your-channel-access-token"
 
 <span class="comment"># Run with tsx</span>
 npx tsx src/index.ts</code></pre>
 
-                <div class="note">
-                    <strong>Tip:</strong> Use ngrok or similar tools to expose your local server for webhook testing:
-                    <code>ngrok http 3000</code>
-                </div>
-            </article>
+        <div class="note">
+          <strong>Tip:</strong> Use ngrok or similar tools to expose your local server for webhook testing:
+          <code>ngrok http 3000</code>
+        </div>
+      </article>
 
-            <!-- Tutorial: Login -->
-            <article id="tutorial-login">
-                <h3>2. LINE Login Integration</h3>
-                <p>Implement "Log in with LINE" in your web application with CSRF protection.</p>
+      <!-- Tutorial: Login -->
+      <article id="tutorial-login">
+        <h3>2. LINE Login Integration</h3>
+        <p>Implement "Log in with LINE" in your web application with CSRF protection.</p>
 
-                <div class="flow-diagram">
-                    <h4>OAuth 2.1 Login Flow</h4>
-                    <div class="flow-row">
-                        <div class="flow-step">
-                            <div class="flow-box">User</div>
-                            <div class="flow-label">clicks login</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">Your App</div>
-                            <div class="flow-label">generates state</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE Auth</div>
-                            <div class="flow-label">user logs in</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">Callback</div>
-                            <div class="flow-label">validates state</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE API</div>
-                            <div class="flow-label">exchange token</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box">Logged In</div>
-                            <div class="flow-label">user profile</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="flow-diagram">
+          <h4>OAuth 2.1 Login Flow</h4>
+          <div class="flow-row">
+            <div class="flow-step">
+              <div class="flow-box">User</div>
+              <div class="flow-label">clicks login</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">Your App</div>
+              <div class="flow-label">generates state</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE Auth</div>
+              <div class="flow-label">user logs in</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">Callback</div>
+              <div class="flow-label">validates state</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE API</div>
+              <div class="flow-label">exchange token</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box">Logged In</div>
+              <div class="flow-label">user profile</div>
+            </div>
+          </div>
+        </div>
 
-                <pre><code><span class="comment">// src/auth.ts</span>
+        <pre><code><span class="comment">// src/auth.ts</span>
 <span class="keyword">import</span> {
   login,
   generateAuthUrl,
@@ -649,14 +817,14 @@ app.<span class="function">get</span>(<span class="string">"/callback"</span>, <
   req.session.user = user;
   res.<span class="function">redirect</span>(<span class="string">"/dashboard"</span>);
 });</code></pre>
-            </article>
+      </article>
 
-            <!-- Tutorial: Messages -->
-            <article id="tutorial-messages">
-                <h3>3. Sending Different Message Types</h3>
-                <p>LINE supports various message types. Here's how to send each one.</p>
+      <!-- Tutorial: Messages -->
+      <article id="tutorial-messages">
+        <h3>3. Sending Different Message Types</h3>
+        <p>LINE supports various message types. Here's how to send each one.</p>
 
-                <pre><code><span class="keyword">import</span> {
+        <pre><code><span class="keyword">import</span> {
   replyMessage,
   pushMessage,
   multicast
@@ -726,14 +894,14 @@ app.<span class="function">get</span>(<span class="string">"/callback"</span>, <
   type: <span class="string">"text"</span>,
   text: <span class="string">"Hello everyone!"</span>
 }]);</code></pre>
-            </article>
+      </article>
 
-            <!-- Tutorial: Rich Menu -->
-            <article id="tutorial-richmenu">
-                <h3>4. Rich Menu Management</h3>
-                <p>Create and manage rich menus programmatically.</p>
+      <!-- Tutorial: Rich Menu -->
+      <article id="tutorial-richmenu">
+        <h3>4. Rich Menu Management</h3>
+        <p>Create and manage rich menus programmatically.</p>
 
-                <pre><code><span class="keyword">import</span> { richMenu } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
+        <pre><code><span class="keyword">import</span> { richMenu } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
 
 <span class="keyword">const</span> TOKEN = process.env.CHANNEL_ACCESS_TOKEN!;
 
@@ -777,18 +945,18 @@ console.<span class="function">log</span>(<span class="string">"Rich menu create
 <span class="comment">// Delete rich menu</span>
 <span class="keyword">await</span> richMenu.<span class="function">delete</span>(TOKEN, menu.richMenuId);</code></pre>
 
-                <div class="note">
-                    <strong>Note:</strong> You'll need to upload a rich menu image separately using the LINE API.
-                    The image should be 2500x1686 or 2500x843 pixels.
-                </div>
-            </article>
+        <div class="note">
+          <strong>Note:</strong> You'll need to upload a rich menu image separately using the LINE API.
+          The image should be 2500x1686 or 2500x843 pixels.
+        </div>
+      </article>
 
-            <!-- Tutorial: Errors -->
-            <article id="tutorial-errors">
-                <h3>5. Error Handling</h3>
-                <p>Properly handle errors from LINE API calls.</p>
+      <!-- Tutorial: Errors -->
+      <article id="tutorial-errors">
+        <h3>5. Error Handling</h3>
+        <p>Properly handle errors from LINE API calls.</p>
 
-                <pre><code><span class="keyword">import</span> { LineClientError } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
+        <pre><code><span class="keyword">import</span> { LineClientError } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
 <span class="keyword">import</span> { LineLoginError } <span class="keyword">from</span> <span class="string">"@linekit/login"</span>;
 
 <span class="comment">// Messaging API errors</span>
@@ -799,121 +967,175 @@ console.<span class="function">log</span>(<span class="string">"Rich menu create
     console.<span class="function">error</span>(<span class="string">`LINE API Error: ${error.message}`</span>);
     console.<span class="function">error</span>(<span class="string">`Status: ${error.status}`</span>);
     console.<span class="function">error</span>(<span class="string">`Details:`</span>, error.data);
+  }
+}</code></pre>
+      </article>
 
-    <span class="comment">// Handle specific errors</span>
-    <span class="keyword">if</span> (error.status === 400) {
+      <!-- Tutorial: Marketing Push -->
+      <article id="tutorial-marketing">
+        <h3>6. Marketing Push</h3>
+        <p>Send messages to a large list of users with automatic chunking and rate limiting.</p>
+
+        <pre><code><span class="keyword">import</span> { bulkMulticast } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
+
+<span class="keyword">const</span> userList = [<span class="string">"U1..."</span>, <span class="string">"U2..."</span>, <span class="comment">/* 1000+ users */</span>];
+
+<span class="keyword">const</span> results = <span class="keyword">await</span> <span class="function">bulkMulticast</span>(
+  TOKEN,
+  userList,
+  [{ type: <span class="string">"text"</span>, text: <span class="string">"Weekly Update!"</span> }],
+  {
+    chunkSize: 500, <span class="comment">// LINE API limit</span>
+    delayMs: 1000   <span class="comment">// Pause 1s between chunks</span>
+  }
+);
+
+<span class="keyword">const</span> successCount = results.<span class="function">filter</span>(r => r.success).<span class="function">reduce</span>((acc, r) => acc + r.count, 0);
+console.<span class="function">log</span>(<span class="string">`Sent to ${successCount} users`</span>);</code></pre>
+      </article>
+
+      <!-- Tutorial: LIFF -->
+      <article id="tutorial-liff">
+        <h3>7. LIFF App Management</h3>
+        <p>Create and manage LIFF apps programmatically from your server.</p>
+
+        <pre><code><span class="keyword">import</span> { LiffClient } <span class="keyword">from</span> <span class="string">"@linekit/liff"</span>;
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">LiffClient</span>({
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+});
+
+<span class="comment">// Create a new LIFF app</span>
+<span class="keyword">const</span> { liffId } = <span class="keyword">await</span> client.<span class="function">add</span>({
+  view: {
+    type: <span class="string">"full"</span>,
+    url: <span class="string">"https://mysite.com/app"</span>
+  }
+});
+
+console.<span class="function">log</span>(<span class="string">"Created LIFF App: https://liff.line.me/"</span> + liffId);</code></pre>
+      </article>
+      console.<span class="function">error</span>(<span class="string">`Details:`</span>, error.data);
+
+      <span class="comment">// Handle specific errors</span>
+      <span class="keyword">if</span> (error.status === 400) {
       <span class="comment">// Bad request - check message format</span>
-    } <span class="keyword">else if</span> (error.status === 401) {
+      } <span class="keyword">else if</span> (error.status === 401) {
       <span class="comment">// Invalid token</span>
-    } <span class="keyword">else if</span> (error.status === 429) {
+      } <span class="keyword">else if</span> (error.status === 429) {
       <span class="comment">// Rate limited - implement backoff</span>
-    }
-  }
-}
+      }
+      }
+      }
 
-<span class="comment">// Login errors</span>
-<span class="keyword">try</span> {
-  <span class="keyword">const</span> user = <span class="keyword">await</span> login.<span class="function">verify</span>(idToken, channelId);
-} <span class="keyword">catch</span> (error) {
-  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> LineLoginError) {
-    console.<span class="function">error</span>(<span class="string">`Login Error: ${error.code}`</span>);
+      <span class="comment">// Login errors</span>
+      <span class="keyword">try</span> {
+      <span class="keyword">const</span> user = <span class="keyword">await</span> login.<span
+        class="function">verify</span>(idToken, channelId);
+      } <span class="keyword">catch</span> (error) {
+      <span class="keyword">if</span> (error <span class="keyword">instanceof</span> LineLoginError) {
+      console.<span class="function">error</span>(<span class="string">`Login Error: ${error.code}`</span>);
 
-    <span class="keyword">if</span> (error.code === <span class="string">"INVALID_PARAMETER"</span>) {
+      <span class="keyword">if</span> (error.code === <span class="string">"INVALID_PARAMETER"</span>) {
       <span class="comment">// Missing or invalid parameter</span>
-    } <span class="keyword">else if</span> (error.code === <span class="string">"VERIFICATION_FAILED"</span>) {
+      } <span class="keyword">else if</span> (error.code === <span class="string">"VERIFICATION_FAILED"</span>) {
       <span class="comment">// Token verification failed</span>
-    }
-  }
-}
+      }
+      }
+      }
 
-<span class="comment">// Router error handling</span>
-<span class="keyword">const</span> router = line.<span class="function">router</span>({
-  message: <span class="keyword">async</span> (ctx) => {
-    <span class="comment">// Your handler code</span>
-  }
-}, {
-  onError: <span class="keyword">async</span> (error, ctx) => {
-    console.<span class="function">error</span>(<span class="string">`Error handling ${ctx.event.type}:`</span>, error);
-    <span class="comment">// Log to monitoring service, send alert, etc.</span>
-  }
-});</code></pre>
-            </article>
-        </section>
+      <span class="comment">// Router error handling</span>
+      <span class="keyword">const</span> router = line.<span class="function">router</span>({
+      message: <span class="keyword">async</span> (ctx) => {
+      <span class="comment">// Your handler code</span>
+      }
+      }, {
+      onError: <span class="keyword">async</span> (error, ctx) => {
+      console.<span class="function">error</span>(<span class="string">`Error handling ${ctx.event.type}:`</span>,
+      error);
+      <span class="comment">// Log to monitoring service, send alert, etc.</span>
+      }
+      });</code></pre>
+      </article>
+    </section>
 
-        <!-- API Reference -->
-        <section id="api-reference">
-            <h2>API Reference</h2>
+    <!-- API Reference -->
+    <section id="api-reference">
+      <h2>API Reference</h2>
 
-            <h3>@linekit/core</h3>
-            <ul>
-                <li><code>createLineApp(config)</code> - Create a LINE app instance</li>
-                <li><code>createWebhookMiddleware(config)</code> - Create webhook verification middleware</li>
-                <li><code>Context</code> - Event context with reply/push helpers</li>
-                <li><code>isReplyableEvent(event)</code> - Type guard for replyable events</li>
-            </ul>
+      <h3>@linekit/core</h3>
+      <ul>
+        <li><code>createLineApp(config)</code> - Create a LINE app instance</li>
+        <li><code>createWebhookMiddleware(config)</code> - Create webhook verification middleware</li>
+        <li><code>Context</code> - Event context with reply/push helpers</li>
+        <li><code>isReplyableEvent(event)</code> - Type guard for replyable events</li>
+      </ul>
 
-            <h3>@linekit/messaging</h3>
-            <ul>
-                <li><code>replyMessage(token, replyToken, messages)</code> - Reply to an event</li>
-                <li><code>replyText(token, replyToken, text)</code> - Reply with text</li>
-                <li><code>pushMessage(token, to, messages)</code> - Push message to user</li>
-                <li><code>pushText(token, to, text)</code> - Push text to user</li>
-                <li><code>multicast(token, to[], messages)</code> - Send to multiple users</li>
-                <li><code>richMenu.create/delete/get/setDefault/linkUser/unlinkUser</code> - Rich Menu management</li>
-            </ul>
+      <h3>@linekit/messaging</h3>
+      <ul>
+        <li><code>replyMessage(token, replyToken, messages)</code> - Reply to an event</li>
+        <li><code>replyText(token, replyToken, text)</code> - Reply with text</li>
+        <li><code>pushMessage(token, to, messages)</code> - Push message to user</li>
+        <li><code>pushText(token, to, text)</code> - Push text to user</li>
+        <li><code>multicast(token, to[], messages)</code> - Send to multiple users</li>
+        <li><code>richMenu.create/delete/get/setDefault/linkUser/unlinkUser</code> - Rich Menu management</li>
+      </ul>
 
-            <h3>@linekit/login</h3>
-            <ul>
-                <li><code>generateAuthUrl(options)</code> - Generate OAuth authorization URL</li>
-                <li><code>issueAccessToken(channelId, secret, code, redirectUri)</code> - Exchange code for tokens</li>
-                <li><code>login.verify(idToken, channelId)</code> - Verify ID token</li>
-                <li><code>login.generateState()</code> - Generate CSRF state</li>
-                <li><code>login.validateState(expected, actual)</code> - Validate CSRF state</li>
-                <li><code>login.generateNonce()</code> - Generate nonce for ID token</li>
-            </ul>
-        </section>
+      <h3>@linekit/login</h3>
+      <ul>
+        <li><code>generateAuthUrl(options)</code> - Generate OAuth authorization URL</li>
+        <li><code>issueAccessToken(channelId, secret, code, redirectUri)</code> - Exchange code for tokens</li>
+        <li><code>login.verify(idToken, channelId)</code> - Verify ID token</li>
+        <li><code>login.generateState()</code> - Generate CSRF state</li>
+        <li><code>login.validateState(expected, actual)</code> - Validate CSRF state</li>
+        <li><code>login.generateNonce()</code> - Generate nonce for ID token</li>
+      </ul>
+    </section>
 
-        <!-- Security -->
-        <section id="security">
-            <h2>Security Features</h2>
+    <!-- Security -->
+    <section id="security">
+      <h2>Security Features</h2>
 
-            <div class="note">
-                <strong>linekit</strong> is built with security as a priority:
-            </div>
+      <div class="note">
+        <strong>linekit</strong> is built with security as a priority:
+      </div>
 
-            <ul>
-                <li><strong>Timing-safe signature verification</strong> - Prevents timing attacks on webhook signature validation</li>
-                <li><strong>Input validation</strong> - All API inputs are validated before sending</li>
-                <li><strong>CSRF protection</strong> - Built-in state generation and validation for OAuth flows</li>
-                <li><strong>Type safety</strong> - TypeScript catches errors at compile time</li>
-                <li><strong>No signature bypass</strong> - Invalid signatures always throw errors</li>
-            </ul>
+      <ul>
+        <li><strong>Timing-safe signature verification</strong> - Prevents timing attacks on webhook signature
+          validation</li>
+        <li><strong>Input validation</strong> - All API inputs are validated before sending</li>
+        <li><strong>CSRF protection</strong> - Built-in state generation and validation for OAuth flows</li>
+        <li><strong>Type safety</strong> - TypeScript catches errors at compile time</li>
+        <li><strong>No signature bypass</strong> - Invalid signatures always throw errors</li>
+      </ul>
 
-            <div class="warning">
-                <strong>Security Best Practices:</strong>
-                <ul>
-                    <li>Never expose your channel secret or access token in client-side code</li>
-                    <li>Always validate the OAuth state parameter</li>
-                    <li>Use HTTPS for all webhook endpoints</li>
-                    <li>Regularly rotate your access tokens</li>
-                </ul>
-            </div>
-        </section>
+      <div class="warning">
+        <strong>Security Best Practices:</strong>
+        <ul>
+          <li>Never expose your channel secret or access token in client-side code</li>
+          <li>Always validate the OAuth state parameter</li>
+          <li>Use HTTPS for all webhook endpoints</li>
+          <li>Regularly rotate your access tokens</li>
+        </ul>
+      </div>
+    </section>
 
-        <footer>
-            <p class="disclaimer" style="font-size: 0.85rem; margin-bottom: 1rem;">
-                <strong>Note:</strong> This is an unofficial, third-party toolkit developed by <a href="https://pcircle.ai">pcircle.ai</a>.
-                It is not affiliated with or endorsed by LINE Corporation.
-            </p>
-            <p style="margin-bottom: 0.5rem;">
-                <strong style="color: var(--primary);">pcircle.ai</strong> — Developer Tools & AI Solutions
-            </p>
-            <p>MIT License &copy; 2025 <a href="https://pcircle.ai" style="color: var(--primary);">pcircle.ai</a></p>
-            <p>
-                <a href="https://github.com/PCIRCLE-AI/linekit" style="color: var(--gray);">GitHub</a> ·
-                <a href="https://github.com/PCIRCLE-AI/linekit/issues" style="color: var(--gray);">Issues</a>
-            </p>
-        </footer>
-    </div>
+    <footer>
+      <p class="disclaimer" style="font-size: 0.85rem; margin-bottom: 1rem;">
+        <strong>Note:</strong> This is an unofficial, third-party toolkit developed by <a
+          href="https://pcircle.ai">pcircle.ai</a>.
+        It is not affiliated with or endorsed by LINE Corporation.
+      </p>
+      <p style="margin-bottom: 0.5rem;">
+        <strong style="color: var(--primary);">pcircle.ai</strong> — Developer Tools & AI Solutions
+      </p>
+      <p>MIT License &copy; 2025 <a href="https://pcircle.ai" style="color: var(--primary);">pcircle.ai</a></p>
+      <p>
+        <a href="https://github.com/PCIRCLE-AI/linekit" style="color: var(--gray);">GitHub</a> ·
+        <a href="https://github.com/PCIRCLE-AI/linekit/issues" style="color: var(--gray);">Issues</a>
+      </p>
+    </footer>
+  </div>
 </body>
+
 </html>

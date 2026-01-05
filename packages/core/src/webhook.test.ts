@@ -79,4 +79,34 @@ describe('webhook middleware', () => {
         expect(res.statusCode).toBe(401);
         expect(res.end).toHaveBeenCalledWith('Signature validation failed');
     });
+
+    it('should read body from stream if rawBody is missing', async () => {
+        const bodyStr = JSON.stringify({ events: [] });
+        const signature = crypto.createHmac('sha256', config.channelSecret).update(bodyStr).digest('base64');
+
+        // Mock a readable stream
+        const req: any = {
+            headers: { 'x-line-signature': signature },
+            readable: true,
+            listeners: {},
+            on: function (event: string, callback: any) {
+                if (event === 'data') {
+                    callback(Buffer.from(bodyStr));
+                }
+                if (event === 'end') {
+                    callback();
+                }
+                return this;
+            }
+        };
+
+        const res: any = {};
+        const next = vi.fn();
+
+        await middleware(req, res, next);
+
+        expect(next).toHaveBeenCalled();
+        expect(req.rawBody).toBe(bodyStr);
+        expect(req.body).toEqual(JSON.parse(bodyStr));
+    });
 });

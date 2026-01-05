@@ -1,305 +1,463 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>linekit - TypeScript LINE 機器人與登入開發工具包</title>
-    <meta name="description" content="linekit 是用於開發 LINE 聊天機器人、實作 LINE Login OAuth 2.1 登入、管理圖文選單的 TypeScript 工具包。具備時序安全的 Webhook 驗證、CSRF 保護，支援 Express.js、Fastify 等 Node.js 框架。">
-    <meta name="keywords" content="LINE API, LINE Messaging API, LINE Login, LINE 機器人, LINE 聊天機器人, LIFF, TypeScript, Node.js, Express, Fastify, webhook, OAuth 2.1, 圖文選單, Rich Menu">
-    <meta name="author" content="pcircle.ai">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://pcircle-ai.github.io/linekit/index-zh.html">
-    <link rel="alternate" hreflang="en" href="https://pcircle-ai.github.io/linekit/">
-    <link rel="alternate" hreflang="zh-TW" href="https://pcircle-ai.github.io/linekit/index-zh.html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>linekit - TypeScript LINE 機器人與登入開發工具包</title>
+  <meta name="description"
+    content="linekit 是用於開發 LINE 聊天機器人、實作 LINE Login OAuth 2.1 登入、管理圖文選單的 TypeScript 工具包。具備時序安全的 Webhook 驗證、CSRF 保護，支援 Express.js、Fastify 等 Node.js 框架。">
+  <meta name="keywords"
+    content="LINE API, LINE Messaging API, LINE Login, LINE 機器人, LINE 聊天機器人, LIFF, TypeScript, Node.js, Express, Fastify, webhook, OAuth 2.1, 圖文選單, Rich Menu">
+  <meta name="author" content="pcircle.ai">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://pcircle-ai.github.io/linekit/index-zh.html">
+  <link rel="alternate" hreflang="en" href="https://pcircle-ai.github.io/linekit/">
+  <link rel="alternate" hreflang="zh-TW" href="https://pcircle-ai.github.io/linekit/index-zh.html">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://pcircle-ai.github.io/linekit/index-zh.html">
-    <meta property="og:title" content="linekit - TypeScript LINE 機器人與登入開發工具包">
-    <meta property="og:description" content="模組化、型別安全的 LINE Messaging API、LINE Login 和 LIFF 開發工具包。">
-    <meta property="og:image" content="https://pcircle-ai.github.io/linekit/og-image.png">
-    <meta property="og:locale" content="zh_TW">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pcircle-ai.github.io/linekit/index-zh.html">
+  <meta property="og:title" content="linekit - TypeScript LINE 機器人與登入開發工具包">
+  <meta property="og:description" content="模組化、型別安全的 LINE Messaging API、LINE Login 和 LIFF 開發工具包。">
+  <meta property="og:image" content="https://pcircle-ai.github.io/linekit/og-image.png">
+  <meta property="og:locale" content="zh_TW">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://pcircle-ai.github.io/linekit/index-zh.html">
-    <meta name="twitter:title" content="linekit - TypeScript LINE 機器人與登入開發工具包">
-    <meta name="twitter:description" content="模組化、型別安全的 LINE Messaging API、LINE Login 和 LIFF 開發工具包。">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://pcircle-ai.github.io/linekit/index-zh.html">
+  <meta name="twitter:title" content="linekit - TypeScript LINE 機器人與登入開發工具包">
+  <meta name="twitter:description" content="模組化、型別安全的 LINE Messaging API、LINE Login 和 LIFF 開發工具包。">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #06C755;
-            --primary-dark: #00B900;
-            --text: #111827;
-            --bg: #ffffff;
-            --gray: #6B7280;
-            --gray-light: #9CA3AF;
-            --code-bg: #1f2937;
-            --code-text: #e5e7eb;
-            --card-bg: #f9fafb;
-            --border: #e5e7eb;
-        }
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            color: var(--text);
-            line-height: 1.7;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
-        header { text-align: center; padding: 4rem 0 2rem; }
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #06C755 0%, #00B900 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        h2 { color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: 3rem; }
-        h3 { color: var(--text); margin-top: 2rem; }
-        .subtitle { font-size: 1.4rem; color: var(--gray); margin-bottom: 2rem; }
-        .buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        .btn {
-            padding: 0.8rem 1.5rem;
-            border-radius: 9999px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-            display: inline-block;
-        }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3); }
-        .btn-outline { border: 2px solid var(--gray); color: var(--text); }
-        .btn-outline:hover { border-color: var(--text); }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
-        }
-        .feature-card {
-            padding: 1.5rem;
-            border-radius: 12px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-        }
-        .feature-title { font-weight: 800; margin-bottom: 0.5rem; color: var(--primary); }
-        pre {
-            background: var(--code-bg);
-            color: var(--code-text);
-            padding: 1.5rem;
-            border-radius: 12px;
-            overflow-x: auto;
-            font-size: 0.85rem;
-            font-family: 'Fira Code', monospace;
-            line-height: 1.5;
-        }
-        code {
-            font-family: 'Fira Code', monospace;
-            background: #e5e7eb;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85em;
-        }
-        pre code { background: none; padding: 0; }
-        .lang-switch { position: absolute; top: 1rem; right: 1rem; }
-        .lang-switch a { color: var(--gray); text-decoration: none; margin-left: 1rem; font-weight: 600; }
-        .lang-switch a.active { color: var(--primary); }
-        footer { text-align: center; margin-top: 4rem; padding: 2rem; color: var(--gray); font-size: 0.9rem; border-top: 1px solid var(--border); }
-        .disclaimer {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            color: #92400e;
-        }
-        .disclaimer a { color: #d97706; font-weight: 600; }
-        .note {
-            background: #ecfdf5;
-            border: 1px solid #10b981;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: #065f46;
-        }
-        .warning {
-            background: #fef2f2;
-            border: 1px solid #ef4444;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            color: #991b1b;
-        }
-        .toc {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-        .toc h3 { margin-top: 0; }
-        .toc ul { margin: 0; padding-left: 1.5rem; }
-        .toc li { margin: 0.5rem 0; }
-        .toc a { color: var(--primary); text-decoration: none; }
-        .toc a:hover { text-decoration: underline; }
-        .package-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .package-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-        .package-card h4 { margin: 0 0 0.5rem; color: var(--primary); }
-        .package-card p { margin: 0; font-size: 0.9rem; color: var(--gray); }
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .subtitle { font-size: 1.1rem; }
-            pre { font-size: 0.75rem; padding: 1rem; }
-        }
-        .comment { color: #6b7280; }
-        .keyword { color: #c084fc; }
-        .string { color: #34d399; }
-        .function { color: #60a5fa; }
-        /* Flow diagram styles */
-        .flow-diagram {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            overflow-x: auto;
-        }
-        .flow-diagram h4 {
-            margin: 0 0 1rem;
-            color: var(--primary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .flow-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-        }
-        .flow-box {
-            background: white;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            text-align: center;
-            min-width: 80px;
-        }
-        .flow-box.highlight {
-            background: var(--primary);
-            color: white;
-        }
-        .flow-box.secondary {
-            border-color: var(--gray);
-            background: #f9fafb;
-        }
-        .flow-arrow {
-            color: var(--gray);
-            font-size: 1.2rem;
-        }
-        .flow-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-            text-align: center;
-            margin-top: 0.25rem;
-        }
-        .flow-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary: #06C755;
+      --primary-dark: #00B900;
+      --text: #111827;
+      --bg: #ffffff;
+      --gray: #6B7280;
+      --gray-light: #9CA3AF;
+      --code-bg: #1f2937;
+      --code-text: #e5e7eb;
+      --card-bg: #f9fafb;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 0 2rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #06C755 0%, #00B900 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      color: var(--primary);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-top: 3rem;
+    }
+
+    h3 {
+      color: var(--text);
+      margin-top: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--gray);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    .feature-card {
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+    }
+
+    .feature-title {
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      font-family: 'Fira Code', monospace;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: #e5e7eb;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    .lang-switch {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .lang-switch a {
+      color: var(--gray);
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: 600;
+    }
+
+    .lang-switch a.active {
+      color: var(--primary);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding: 2rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .disclaimer {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: #92400e;
+    }
+
+    .disclaimer a {
+      color: #d97706;
+      font-weight: 600;
+    }
+
+    .note {
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #065f46;
+    }
+
+    .warning {
+      background: #fef2f2;
+      border: 1px solid #ef4444;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #991b1b;
+    }
+
+    .toc {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+    }
+
+    .toc ul {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .toc li {
+      margin: 0.5rem 0;
+    }
+
+    .toc a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .package-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .package-card h4 {
+      margin: 0 0 0.5rem;
+      color: var(--primary);
+    }
+
+    .package-card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      pre {
+        font-size: 0.75rem;
+        padding: 1rem;
+      }
+    }
+
+    .comment {
+      color: #6b7280;
+    }
+
+    .keyword {
+      color: #c084fc;
+    }
+
+    .string {
+      color: #34d399;
+    }
+
+    .function {
+      color: #60a5fa;
+    }
+
+    /* Flow diagram styles */
+    .flow-diagram {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .flow-diagram h4 {
+      margin: 0 0 1rem;
+      color: var(--primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+    }
+
+    .flow-box {
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .flow-box.highlight {
+      background: var(--primary);
+      color: white;
+    }
+
+    .flow-box.secondary {
+      border-color: var(--gray);
+      background: #f9fafb;
+    }
+
+    .flow-arrow {
+      color: var(--gray);
+      font-size: 1.2rem;
+    }
+
+    .flow-label {
+      font-size: 0.75rem;
+      color: var(--gray);
+      text-align: center;
+      margin-top: 0.25rem;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="lang-switch">
-        <a href="index-zh.html" class="active">繁體中文</a>
-        <a href="index-en.html">English</a>
-    </div>
+  <div class="lang-switch">
+    <a href="index-zh.html" class="active">繁體中文</a>
+    <a href="index-en.html">English</a>
+  </div>
 
-    <div class="container">
-        <header>
-            <h1>linekit</h1>
-            <div class="subtitle">模組化、型別安全、安全的 LINE 服務開發工具包。</div>
-            <div class="buttons">
-                <a href="#get-started" class="btn btn-primary">開始使用</a>
-                <a href="#tutorials" class="btn btn-primary">教學指南</a>
-                <a href="https://github.com/PCIRCLE-AI/linekit" class="btn btn-outline">GitHub</a>
-            </div>
-        </header>
+  <div class="container">
+    <header>
+      <h1>linekit</h1>
+      <div class="subtitle">模組化、型別安全、安全的 LINE 服務開發工具包。</div>
+      <div class="buttons">
+        <a href="#get-started" class="btn btn-primary">開始使用</a>
+        <a href="#tutorials" class="btn btn-primary">教學指南</a>
+        <a href="https://github.com/PCIRCLE-AI/linekit" class="btn btn-outline">GitHub</a>
+      </div>
+    </header>
 
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-title">模組化</div>
-                <div>只安裝需要的套件：Core、Messaging、Login 或 Adapters。</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">型別安全</div>
-                <div>使用 TypeScript 開發，提供完整型別定義。</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">安全</div>
-                <div>時序安全的簽章驗證、輸入驗證、CSRF 保護。</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-title">框架無關</div>
-                <div>支援 Express、Fastify、Next.js 或標準 Fetch API。</div>
-            </div>
-        </section>
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-title">模組化</div>
+        <div>只安裝需要的套件：Core、Messaging、Login 或 Adapters。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">型別安全</div>
+        <div>使用 TypeScript 開發，提供完整型別定義。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">安全</div>
+        <div>時序安全的簽章驗證、輸入驗證、CSRF 保護。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">框架無關</div>
+        <div>支援 Express、Fastify、Next.js 或標準 Fetch API。</div>
+      </div>
+    </section>
 
-        <nav class="toc">
-            <h3>目錄</h3>
-            <ul>
-                <li><a href="#get-started">開始使用</a></li>
-                <li><a href="#packages">套件總覽</a></li>
-                <li><a href="#tutorials">教學指南</a>
-                    <ul>
-                        <li><a href="#tutorial-bot">建立 LINE Bot</a></li>
-                        <li><a href="#tutorial-login">LINE Login 整合</a></li>
-                        <li><a href="#tutorial-messages">發送訊息類型</a></li>
-                        <li><a href="#tutorial-richmenu">Rich Menu 管理</a></li>
-                        <li><a href="#tutorial-errors">錯誤處理</a></li>
-                    </ul>
-                </li>
-                <li><a href="#api-reference">API 參考</a></li>
-                <li><a href="#security">安全功能</a></li>
-                <li><a href="#api-compatibility">LINE API 相容性</a></li>
-            </ul>
-        </nav>
+    <nav class="toc">
+      <h3>目錄</h3>
+      <ul>
+        <li><a href="#get-started">開始使用</a></li>
+        <li><a href="#packages">套件總覽</a></li>
+        <li><a href="#tutorials">教學指南</a>
+          <ul>
+            <li><a href="#tutorial-bot">建立 LINE Bot</a></li>
+            <li><a href="#tutorial-login">LINE Login 整合</a></li>
+            <li><a href="#tutorial-messages">發送訊息類型</a></li>
+            <li><a href="#tutorial-richmenu">Rich Menu 管理</a></li>
+            <li><a href="#tutorial-errors">錯誤處理</a></li>
+          </ul>
+        </li>
+        <li><a href="#api-reference">API 參考</a></li>
+        <li><a href="#security">安全功能</a></li>
+        <li><a href="#api-compatibility">LINE API 相容性</a></li>
+      </ul>
+    </nav>
 
-        <!-- Getting Started -->
-        <section id="get-started">
-            <h2>開始使用</h2>
+    <!-- Getting Started -->
+    <section id="get-started">
+      <h2>開始使用</h2>
 
-            <h3>前置需求</h3>
-            <ul>
-                <li>Node.js 18 或更高版本</li>
-                <li>LINE Developers 帳號</li>
-                <li>Messaging API 頻道（機器人用）或 LINE Login 頻道</li>
-            </ul>
+      <h3>前置需求</h3>
+      <ul>
+        <li>Node.js 18 或更高版本</li>
+        <li>LINE Developers 帳號</li>
+        <li>Messaging API 頻道（機器人用）或 LINE Login 頻道</li>
+      </ul>
 
-            <h3>安裝</h3>
-            <pre><code><span class="comment"># LINE Bot 開發</span>
+      <h3>安裝</h3>
+      <pre><code><span class="comment"># LINE Bot 開發</span>
 npm install @linekit/core @linekit/messaging @linekit/express
 
 <span class="comment"># LINE Login</span>
@@ -308,8 +466,8 @@ npm install @linekit/login
 <span class="comment"># 或安裝全部</span>
 npm install @linekit/core @linekit/messaging @linekit/login @linekit/express</code></pre>
 
-            <h3>快速開始：Echo Bot</h3>
-            <pre><code><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
+      <h3>快速開始：Echo Bot</h3>
+      <pre><code><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
 <span class="keyword">import</span> { createLineApp } <span class="keyword">from</span> <span class="string">"@linekit/core"</span>;
 <span class="keyword">import</span> { lineMiddleware } <span class="keyword">from</span> <span class="string">"@linekit/express"</span>;
 
@@ -334,78 +492,82 @@ app.<span class="function">post</span>(<span class="string">"/webhook"</span>,
 );
 
 app.<span class="function">listen</span>(3000, () => console.<span class="function">log</span>(<span class="string">"Bot 運行於 port 3000"</span>));</code></pre>
-        </section>
+    </section>
 
-        <!-- Packages -->
-        <section id="packages">
-            <h2>套件總覽</h2>
-            <div class="package-grid">
-                <div class="package-card">
-                    <h4>@linekit/core</h4>
-                    <p>Webhook 驗證（時序安全）、Context、Router 含錯誤處理。</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/messaging</h4>
-                    <p>完整 Messaging API：reply、push、multicast、broadcast。Rich Menu 管理。含輸入驗證。</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/login</h4>
-                    <p>OAuth 2.1 流程、ID Token 驗證、CSRF state 輔助工具。</p>
-                </div>
-                <div class="package-card">
-                    <h4>@linekit/express</h4>
-                    <p>Express.js 適配器，自動處理 body parsing 和簽章驗證 middleware。</p>
-                </div>
+    <!-- Packages -->
+    <section id="packages">
+      <h2>套件總覽</h2>
+      <div class="package-grid">
+        <div class="package-card">
+          <h4>@linekit/core</h4>
+          <p>Webhook 驗證（時序安全）、Context、Router 含錯誤處理。</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/messaging</h4>
+          <p>完整 Messaging API：reply、push、multicast、broadcast。Rich Menu 管理。含輸入驗證。</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/login</h4>
+          <p>OAuth 2.1 流程、ID Token 驗證、CSRF state 輔助工具。</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/express</h4>
+          <p>Express.js 適配器，自動處理 body parsing 和簽章驗證 middleware。</p>
+        </div>
+        <div class="package-card">
+          <h4>@linekit/liff</h4>
+          <p>LIFF 管理 API 客戶端（CRUD）以及 LIFF App 開發所需的型別定義。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tutorials -->
+    <section id="tutorials">
+      <h2>教學指南</h2>
+
+      <!-- Tutorial: Bot -->
+      <article id="tutorial-bot">
+        <h3>1. 建立 LINE Bot</h3>
+        <p>本教學涵蓋建立一個完整功能的 LINE Bot，可以回應訊息、追蹤和 postback 事件。</p>
+
+        <div class="flow-diagram">
+          <h4>Webhook 運作流程</h4>
+          <div class="flow-row">
+            <div class="flow-step">
+              <div class="flow-box">使用者</div>
+              <div class="flow-label">發送訊息</div>
             </div>
-        </section>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE 平台</div>
+              <div class="flow-label">接收並轉發</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">你的伺服器</div>
+              <div class="flow-label">linekit 處理</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE API</div>
+              <div class="flow-label">發送回覆</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box">使用者</div>
+              <div class="flow-label">收到回覆</div>
+            </div>
+          </div>
+        </div>
 
-        <!-- Tutorials -->
-        <section id="tutorials">
-            <h2>教學指南</h2>
-
-            <!-- Tutorial: Bot -->
-            <article id="tutorial-bot">
-                <h3>1. 建立 LINE Bot</h3>
-                <p>本教學涵蓋建立一個完整功能的 LINE Bot，可以回應訊息、追蹤和 postback 事件。</p>
-
-                <div class="flow-diagram">
-                    <h4>Webhook 運作流程</h4>
-                    <div class="flow-row">
-                        <div class="flow-step">
-                            <div class="flow-box">使用者</div>
-                            <div class="flow-label">發送訊息</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE 平台</div>
-                            <div class="flow-label">接收並轉發</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">你的伺服器</div>
-                            <div class="flow-label">linekit 處理</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE API</div>
-                            <div class="flow-label">發送回覆</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box">使用者</div>
-                            <div class="flow-label">收到回覆</div>
-                        </div>
-                    </div>
-                </div>
-
-                <h4>步驟 1：建立專案</h4>
-                <pre><code>mkdir my-line-bot && cd my-line-bot
+        <h4>步驟 1：建立專案</h4>
+        <pre><code>mkdir my-line-bot && cd my-line-bot
 npm init -y
 npm install express @linekit/core @linekit/messaging @linekit/express
 npm install -D typescript @types/node @types/express tsx</code></pre>
 
-                <h4>步驟 2：建立 Bot</h4>
-                <pre><code><span class="comment">// src/index.ts</span>
+        <h4>步驟 2：建立 Bot</h4>
+        <pre><code><span class="comment">// src/index.ts</span>
 <span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">"express"</span>;
 <span class="keyword">import</span> { createLineApp } <span class="keyword">from</span> <span class="string">"@linekit/core"</span>;
 <span class="keyword">import</span> { lineMiddleware } <span class="keyword">from</span> <span class="string">"@linekit/express"</span>;
@@ -464,61 +626,61 @@ app.<span class="function">listen</span>(3000, () => {
   console.<span class="function">log</span>(<span class="string">"Bot 運行於 http://localhost:3000"</span>);
 });</code></pre>
 
-                <h4>步驟 3：執行 Bot</h4>
-                <pre><code><span class="comment"># 設定環境變數</span>
+        <h4>步驟 3：執行 Bot</h4>
+        <pre><code><span class="comment"># 設定環境變數</span>
 export CHANNEL_SECRET="your-channel-secret"
 export CHANNEL_ACCESS_TOKEN="your-channel-access-token"
 
 <span class="comment"># 使用 tsx 執行</span>
 npx tsx src/index.ts</code></pre>
 
-                <div class="note">
-                    <strong>提示：</strong>使用 ngrok 或類似工具來測試 webhook：
-                    <code>ngrok http 3000</code>
-                </div>
-            </article>
+        <div class="note">
+          <strong>提示：</strong>使用 ngrok 或類似工具來測試 webhook：
+          <code>ngrok http 3000</code>
+        </div>
+      </article>
 
-            <!-- Tutorial: Login -->
-            <article id="tutorial-login">
-                <h3>2. LINE Login 整合</h3>
-                <p>在你的網頁應用程式中實作「使用 LINE 登入」功能，包含 CSRF 保護。</p>
+      <!-- Tutorial: Login -->
+      <article id="tutorial-login">
+        <h3>2. LINE Login 整合</h3>
+        <p>在你的網頁應用程式中實作「使用 LINE 登入」功能，包含 CSRF 保護。</p>
 
-                <div class="flow-diagram">
-                    <h4>OAuth 2.1 登入流程</h4>
-                    <div class="flow-row">
-                        <div class="flow-step">
-                            <div class="flow-box">使用者</div>
-                            <div class="flow-label">點擊登入</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">你的應用</div>
-                            <div class="flow-label">產生 state</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE 認證</div>
-                            <div class="flow-label">使用者登入</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box highlight">Callback</div>
-                            <div class="flow-label">驗證 state</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box secondary">LINE API</div>
-                            <div class="flow-label">交換 token</div>
-                        </div>
-                        <span class="flow-arrow">→</span>
-                        <div class="flow-step">
-                            <div class="flow-box">登入成功</div>
-                            <div class="flow-label">使用者資料</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="flow-diagram">
+          <h4>OAuth 2.1 登入流程</h4>
+          <div class="flow-row">
+            <div class="flow-step">
+              <div class="flow-box">使用者</div>
+              <div class="flow-label">點擊登入</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">你的應用</div>
+              <div class="flow-label">產生 state</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE 認證</div>
+              <div class="flow-label">使用者登入</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box highlight">Callback</div>
+              <div class="flow-label">驗證 state</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box secondary">LINE API</div>
+              <div class="flow-label">交換 token</div>
+            </div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-step">
+              <div class="flow-box">登入成功</div>
+              <div class="flow-label">使用者資料</div>
+            </div>
+          </div>
+        </div>
 
-                <pre><code><span class="comment">// src/auth.ts</span>
+        <pre><code><span class="comment">// src/auth.ts</span>
 <span class="keyword">import</span> {
   login,
   generateAuthUrl,
@@ -599,14 +761,14 @@ app.<span class="function">get</span>(<span class="string">"/callback"</span>, <
   req.session.user = user;
   res.<span class="function">redirect</span>(<span class="string">"/dashboard"</span>);
 });</code></pre>
-            </article>
+      </article>
 
-            <!-- Tutorial: Messages -->
-            <article id="tutorial-messages">
-                <h3>3. 發送訊息類型</h3>
-                <p>LINE 支援多種訊息類型，以下是各類型的發送方式。</p>
+      <!-- Tutorial: Messages -->
+      <article id="tutorial-messages">
+        <h3>3. 發送訊息類型</h3>
+        <p>LINE 支援多種訊息類型，以下是各類型的發送方式。</p>
 
-                <pre><code><span class="keyword">import</span> {
+        <pre><code><span class="keyword">import</span> {
   replyMessage,
   pushMessage,
   multicast
@@ -676,14 +838,14 @@ app.<span class="function">get</span>(<span class="string">"/callback"</span>, <
   type: <span class="string">"text"</span>,
   text: <span class="string">"大家好！"</span>
 }]);</code></pre>
-            </article>
+      </article>
 
-            <!-- Tutorial: Rich Menu -->
-            <article id="tutorial-richmenu">
-                <h3>4. Rich Menu 管理</h3>
-                <p>以程式方式建立和管理 Rich Menu。</p>
+      <!-- Tutorial: Rich Menu -->
+      <article id="tutorial-richmenu">
+        <h3>4. Rich Menu 管理</h3>
+        <p>以程式方式建立和管理 Rich Menu。</p>
 
-                <pre><code><span class="keyword">import</span> { richMenu } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
+        <pre><code><span class="keyword">import</span> { richMenu } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
 
 <span class="keyword">const</span> TOKEN = process.env.CHANNEL_ACCESS_TOKEN!;
 
@@ -727,18 +889,18 @@ console.<span class="function">log</span>(<span class="string">"Rich Menu 已建
 <span class="comment">// 刪除 Rich Menu</span>
 <span class="keyword">await</span> richMenu.<span class="function">delete</span>(TOKEN, menu.richMenuId);</code></pre>
 
-                <div class="note">
-                    <strong>注意：</strong>你需要另外使用 LINE API 上傳 Rich Menu 圖片。
-                    圖片尺寸應為 2500x1686 或 2500x843 像素。
-                </div>
-            </article>
+        <div class="note">
+          <strong>注意：</strong>你需要另外使用 LINE API 上傳 Rich Menu 圖片。
+          圖片尺寸應為 2500x1686 或 2500x843 像素。
+        </div>
+      </article>
 
-            <!-- Tutorial: Errors -->
-            <article id="tutorial-errors">
-                <h3>5. 錯誤處理</h3>
-                <p>正確處理來自 LINE API 的錯誤。</p>
+      <!-- Tutorial: Errors -->
+      <article id="tutorial-errors">
+        <h3>5. 錯誤處理</h3>
+        <p>正確處理來自 LINE API 的錯誤。</p>
 
-                <pre><code><span class="keyword">import</span> { LineClientError } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
+        <pre><code><span class="keyword">import</span> { LineClientError } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
 <span class="keyword">import</span> { LineLoginError } <span class="keyword">from</span> <span class="string">"@linekit/login"</span>;
 
 <span class="comment">// Messaging API 錯誤</span>
@@ -787,135 +949,184 @@ console.<span class="function">log</span>(<span class="string">"Rich Menu 已建
     <span class="comment">// 記錄到監控服務、發送警報等</span>
   }
 });</code></pre>
-            </article>
-        </section>
+      </article>
 
-        <!-- API Reference -->
-        <section id="api-reference">
-            <h2>API 參考</h2>
+      <!-- Tutorial: Marketing Push -->
+      <article id="tutorial-marketing">
+        <h3>6. 行銷推播</h3>
+        <p>自動分批處理大量用戶清單並發送訊息，內建速率限制功能。</p>
 
-            <h3>@linekit/core</h3>
-            <ul>
-                <li><code>createLineApp(config)</code> - 建立 LINE 應用實例</li>
-                <li><code>createWebhookMiddleware(config)</code> - 建立 webhook 驗證 middleware</li>
-                <li><code>Context</code> - 事件 context，包含 reply/push 輔助方法</li>
-                <li><code>isReplyableEvent(event)</code> - 可回覆事件的型別 guard</li>
-            </ul>
+        <pre><code><span class="keyword">import</span> { bulkMulticast } <span class="keyword">from</span> <span class="string">"@linekit/messaging"</span>;
 
-            <h3>@linekit/messaging</h3>
-            <ul>
-                <li><code>replyMessage(token, replyToken, messages)</code> - 回覆事件</li>
-                <li><code>replyText(token, replyToken, text)</code> - 以文字回覆</li>
-                <li><code>pushMessage(token, to, messages)</code> - 推送訊息給使用者</li>
-                <li><code>pushText(token, to, text)</code> - 推送文字給使用者</li>
-                <li><code>multicast(token, to[], messages)</code> - 發送給多位使用者</li>
-                <li><code>richMenu.create/delete/get/setDefault/linkUser/unlinkUser</code> - Rich Menu 管理</li>
-            </ul>
+<span class="keyword">const</span> userList = [<span class="string">"U1..."</span>, <span class="string">"U2..."</span>, <span class="comment">/* 1000+ 位用戶 */</span>];
 
-            <h3>@linekit/login</h3>
-            <ul>
-                <li><code>generateAuthUrl(options)</code> - 產生 OAuth 授權 URL</li>
-                <li><code>issueAccessToken(channelId, secret, code, redirectUri)</code> - 用 code 交換 tokens</li>
-                <li><code>login.verify(idToken, channelId)</code> - 驗證 ID token</li>
-                <li><code>login.generateState()</code> - 產生 CSRF state</li>
-                <li><code>login.validateState(expected, actual)</code> - 驗證 CSRF state</li>
-                <li><code>login.generateNonce()</code> - 產生 ID token 用的 nonce</li>
-            </ul>
-        </section>
+<span class="keyword">const</span> results = <span class="keyword">await</span> <span class="function">bulkMulticast</span>(
+  TOKEN,
+  userList,
+  [{ type: <span class="string">"text"</span>, text: <span class="string">"每週更新！"</span> }],
+  {
+    chunkSize: 500, <span class="comment">// LINE API 限制</span>
+    delayMs: 1000   <span class="comment">// 每批次暫停 1 秒</span>
+  }
+);
 
-        <!-- Security -->
-        <section id="security">
-            <h2>安全功能</h2>
+<span class="keyword">const</span> successCount = results.<span class="function">filter</span>(r => r.success).<span class="function">reduce</span>((acc, r) => acc + r.count, 0);
+console.<span class="function">log</span>(<span class="string">`已發送給 ${successCount} 位用戶`</span>);</code></pre>
+      </article>
 
-            <div class="note">
-                <strong>linekit</strong> 以安全為優先考量：
-            </div>
+      <!-- Tutorial: LIFF -->
+      <article id="tutorial-liff">
+        <h3>7. LIFF App 管理</h3>
+        <p>從伺服器端透過程式碼新增與管理 LIFF App。</p>
 
-            <ul>
-                <li><strong>時序安全的簽章驗證</strong> - 防止 webhook 簽章驗證的時序攻擊</li>
-                <li><strong>輸入驗證</strong> - 所有 API 輸入在發送前都會被驗證</li>
-                <li><strong>CSRF 保護</strong> - 內建 OAuth 流程的 state 產生和驗證</li>
-                <li><strong>型別安全</strong> - TypeScript 在編譯時期捕捉錯誤</li>
-                <li><strong>不允許繞過簽章</strong> - 無效的簽章一律拋出錯誤</li>
-            </ul>
+        <pre><code><span class="keyword">import</span> { LiffClient } <span class="keyword">from</span> <span class="string">"@linekit/liff"</span>;
 
-            <div class="warning">
-                <strong>安全最佳實踐：</strong>
-                <ul>
-                    <li>絕不在客戶端程式碼中暴露 channel secret 或 access token</li>
-                    <li>永遠驗證 OAuth state 參數</li>
-                    <li>所有 webhook 端點使用 HTTPS</li>
-                    <li>定期更換 access token</li>
-                </ul>
-            </div>
-        </section>
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">LiffClient</span>({
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+});
 
-        <!-- LINE API Compatibility -->
-        <section id="api-compatibility">
-            <h2>LINE API 相容性</h2>
-            <p>本工具包基於以下 LINE API 版本開發：</p>
+<span class="comment">// 建立新的 LIFF App</span>
+<span class="keyword">const</span> { liffId } = <span class="keyword">await</span> client.<span class="function">add</span>({
+  view: {
+    type: <span class="string">"full"</span>,
+    url: <span class="string">"https://mysite.com/app"</span>
+  }
+});
 
-            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
-                <thead>
-                    <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
-                        <th style="padding: 0.75rem; text-align: left;">API</th>
-                        <th style="padding: 0.75rem; text-align: left;">版本</th>
-                        <th style="padding: 0.75rem; text-align: left;">參考文件</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.75rem;">Messaging API</td>
-                        <td style="padding: 0.75rem;"><code>v2</code></td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/" target="_blank" style="color: var(--primary);">文件</a></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 0.75rem;">LINE Login</td>
-                        <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/" target="_blank" style="color: var(--primary);">文件</a></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 0.75rem;">LIFF</td>
-                        <td style="padding: 0.75rem;"><code>v2</code></td>
-                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/" target="_blank" style="color: var(--primary);">文件</a></td>
-                    </tr>
-                </tbody>
-            </table>
+console.<span class="function">log</span>(<span class="string">"已建立 LIFF App: https://liff.line.me/"</span> + liffId);</code></pre>
+      </article>
+    </section>
 
-            <h3>API 端點 Base URL</h3>
-            <ul>
-                <li><strong>Messaging API：</strong><code>https://api.line.me/v2/bot/</code></li>
-                <li><strong>LINE Login：</strong><code>https://api.line.me/oauth2/v2.1/</code></li>
-                <li><strong>授權：</strong><code>https://access.line.me/oauth2/v2.1/</code></li>
-            </ul>
+    <!-- API Reference -->
+    <section id="api-reference">
+      <h2>API 參考</h2>
 
-            <h3>API 限制（由 linekit 強制執行）</h3>
-            <div class="package-grid">
-                <div class="package-card">
-                    <h4>每次請求訊息數</h4>
-                    <p>最多 <strong>5 則訊息</strong>（reply、push、multicast）</p>
-                </div>
-                <div class="package-card">
-                    <h4>Multicast 收件人數</h4>
-                    <p>每次請求最多 <strong>500 位收件人</strong></p>
-                </div>
-            </div>
-        </section>
+      <h3>@linekit/core</h3>
+      <ul>
+        <li><code>createLineApp(config)</code> - 建立 LINE 應用實例</li>
+        <li><code>createWebhookMiddleware(config)</code> - 建立 webhook 驗證 middleware</li>
+        <li><code>Context</code> - 事件 context，包含 reply/push 輔助方法</li>
+        <li><code>isReplyableEvent(event)</code> - 可回覆事件的型別 guard</li>
+      </ul>
 
-        <footer>
-            <p class="disclaimer" style="font-size: 0.85rem; margin-bottom: 1rem;">
-                <strong>注意：</strong>這是由 <a href="https://pcircle.ai">pcircle.ai</a> 開發的非官方第三方工具包，
-                與 LINE Corporation 無任何隸屬或背書關係。
-            </p>
-            <p style="margin-bottom: 0.5rem;">
-                <strong style="color: var(--primary);">pcircle.ai</strong> — 專注於開發者工具與 AI 解決方案
-            </p>
-            <p>MIT License &copy; 2025 <a href="https://pcircle.ai" style="color: var(--primary);">pcircle.ai</a></p>
-            <p>
-                <a href="https://github.com/PCIRCLE-AI/linekit" style="color: var(--gray);">GitHub</a> ·
-                <a href="https://github.com/PCIRCLE-AI/linekit/issues" style="color: var(--gray);">Issues</a>
-            </p>
-        </footer>
-    </div>
+      <h3>@linekit/messaging</h3>
+      <ul>
+        <li><code>replyMessage(token, replyToken, messages)</code> - 回覆事件</li>
+        <li><code>replyText(token, replyToken, text)</code> - 以文字回覆</li>
+        <li><code>pushMessage(token, to, messages)</code> - 推送訊息給使用者</li>
+        <li><code>pushText(token, to, text)</code> - 推送文字給使用者</li>
+        <li><code>multicast(token, to[], messages)</code> - 發送給多位使用者</li>
+        <li><code>richMenu.create/delete/get/setDefault/linkUser/unlinkUser</code> - Rich Menu 管理</li>
+      </ul>
+
+      <h3>@linekit/login</h3>
+      <ul>
+        <li><code>generateAuthUrl(options)</code> - 產生 OAuth 授權 URL</li>
+        <li><code>issueAccessToken(channelId, secret, code, redirectUri)</code> - 用 code 交換 tokens</li>
+        <li><code>login.verify(idToken, channelId)</code> - 驗證 ID token</li>
+        <li><code>login.generateState()</code> - 產生 CSRF state</li>
+        <li><code>login.validateState(expected, actual)</code> - 驗證 CSRF state</li>
+        <li><code>login.generateNonce()</code> - 產生 ID token 用的 nonce</li>
+      </ul>
+    </section>
+
+    <!-- Security -->
+    <section id="security">
+      <h2>安全功能</h2>
+
+      <div class="note">
+        <strong>linekit</strong> 以安全為優先考量：
+      </div>
+
+      <ul>
+        <li><strong>時序安全的簽章驗證</strong> - 防止 webhook 簽章驗證的時序攻擊</li>
+        <li><strong>輸入驗證</strong> - 所有 API 輸入在發送前都會被驗證</li>
+        <li><strong>CSRF 保護</strong> - 內建 OAuth 流程的 state 產生和驗證</li>
+        <li><strong>型別安全</strong> - TypeScript 在編譯時期捕捉錯誤</li>
+        <li><strong>不允許繞過簽章</strong> - 無效的簽章一律拋出錯誤</li>
+      </ul>
+
+      <div class="warning">
+        <strong>安全最佳實踐：</strong>
+        <ul>
+          <li>絕不在客戶端程式碼中暴露 channel secret 或 access token</li>
+          <li>永遠驗證 OAuth state 參數</li>
+          <li>所有 webhook 端點使用 HTTPS</li>
+          <li>定期更換 access token</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- LINE API Compatibility -->
+    <section id="api-compatibility">
+      <h2>LINE API 相容性</h2>
+      <p>本工具包基於以下 LINE API 版本開發：</p>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <thead>
+          <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
+            <th style="padding: 0.75rem; text-align: left;">API</th>
+            <th style="padding: 0.75rem; text-align: left;">版本</th>
+            <th style="padding: 0.75rem; text-align: left;">參考文件</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 0.75rem;">Messaging API</td>
+            <td style="padding: 0.75rem;"><code>v2</code></td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/"
+                target="_blank" style="color: var(--primary);">文件</a></td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 0.75rem;">LINE Login</td>
+            <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/" target="_blank"
+                style="color: var(--primary);">文件</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 0.75rem;">LIFF</td>
+            <td style="padding: 0.75rem;"><code>v2</code></td>
+            <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/" target="_blank"
+                style="color: var(--primary);">文件</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>API 端點 Base URL</h3>
+      <ul>
+        <li><strong>Messaging API：</strong><code>https://api.line.me/v2/bot/</code></li>
+        <li><strong>LINE Login：</strong><code>https://api.line.me/oauth2/v2.1/</code></li>
+        <li><strong>授權：</strong><code>https://access.line.me/oauth2/v2.1/</code></li>
+      </ul>
+
+      <h3>API 限制（由 linekit 強制執行）</h3>
+      <div class="package-grid">
+        <div class="package-card">
+          <h4>每次請求訊息數</h4>
+          <p>最多 <strong>5 則訊息</strong>（reply、push、multicast）</p>
+        </div>
+        <div class="package-card">
+          <h4>Multicast 收件人數</h4>
+          <p>每次請求最多 <strong>500 位收件人</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p class="disclaimer" style="font-size: 0.85rem; margin-bottom: 1rem;">
+        <strong>注意：</strong>這是由 <a href="https://pcircle.ai">pcircle.ai</a> 開發的非官方第三方工具包，
+        與 LINE Corporation 無任何隸屬或背書關係。
+      </p>
+      <p style="margin-bottom: 0.5rem;">
+        <strong style="color: var(--primary);">pcircle.ai</strong> — 專注於開發者工具與 AI 解決方案
+      </p>
+      <p>MIT License &copy; 2025 <a href="https://pcircle.ai" style="color: var(--primary);">pcircle.ai</a></p>
+      <p>
+        <a href="https://github.com/PCIRCLE-AI/linekit" style="color: var(--gray);">GitHub</a> ·
+        <a href="https://github.com/PCIRCLE-AI/linekit/issues" style="color: var(--gray);">Issues</a>
+      </p>
+    </footer>
+  </div>
 </body>
+
 </html>

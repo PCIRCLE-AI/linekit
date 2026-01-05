@@ -32,6 +32,47 @@ linekit follows a modular architecture to ensure separation of concerns and flex
 - **Components**:
   - `@linekit/express`: Adapts Express `req`/`res` to Core's middleware signature.
 
+### 5. LIFF Layer (`@linekit/liff`)
+
+- **Responsibility**: LIFF management (Server-side) and types.
+- **Components**:
+  - `Client`: CRUD operations for LIFF Apps.
+  - `Types`: Type definitions for LIFF View.
+
+## Architecture Diagram
+
+```mermaid
+graph TD
+    UserCode[User Application]
+    
+    subgraph "@linekit/core"
+        Webhook
+        Router
+        Context
+    end
+    
+    subgraph "@linekit/messaging"
+        MsgClient[Client]
+    end
+    
+    subgraph "@linekit/login"
+        OAuth
+        TokenVerify
+    end
+    
+    subgraph "@linekit/liff"
+        LiffClient
+    end
+    
+    UserCode --> Webhook
+    UserCode --> Router
+    Router --> Context
+    Context --> MsgClient
+    
+    UserCode --> LiffClient
+    UserCode --> OAuth
+```
+
 ## Data Flow (Webhook)
 
 1. **LINE Platform** sends POST request to your server.
