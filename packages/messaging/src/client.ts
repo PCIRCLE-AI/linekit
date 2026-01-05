@@ -1,8 +1,16 @@
+export interface LineAPIErrorResponse {
+    message?: string;
+    details?: Array<{
+        message?: string;
+        property?: string;
+    }>;
+}
+
 export class LineClientError extends Error {
     public status?: number;
-    public data?: any;
+    public data?: LineAPIErrorResponse | string;
 
-    constructor(message: string, status?: number, data?: any) {
+    constructor(message: string, status?: number, data?: LineAPIErrorResponse | string) {
         super(message);
         this.name = "LineClientError";
         this.status = status;
@@ -10,13 +18,13 @@ export class LineClientError extends Error {
     }
 }
 
-export async function lineRequest(
+export async function lineRequest<T = Record<string, unknown>>(
     token: string,
     method: string,
     path: string, // starts with /
-    body?: any,
+    body?: object,
     contentType: string = "application/json"
-) {
+): Promise<T> {
     const url = `https://api.line.me/v2/bot${path}`;
     const headers: Record<string, string> = {
         Authorization: `Bearer ${token}`,
@@ -30,10 +38,10 @@ export async function lineRequest(
     });
 
     if (!res.ok) {
-        let data;
+        let data: LineAPIErrorResponse | string;
         try {
             data = await res.json();
-        } catch (e) {
+        } catch {
             data = await res.text();
         }
         throw new LineClientError(`LINE API Error: ${res.statusText}`, res.status, data);
@@ -41,6 +49,18 @@ export async function lineRequest(
 
     // Some endpoints return empty body on 200/202
     const text = await res.text();
-    return text ? JSON.parse(text) : {};
+    if (!text) {
+        return {} as T;
+    }
+
+    try {
+        return JSON.parse(text) as T;
+    } catch {
+        throw new LineClientError(
+            "Failed to parse LINE API response as JSON",
+            res.status,
+            text
+        );
+    }
 }
 

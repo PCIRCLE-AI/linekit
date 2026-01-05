@@ -12,6 +12,7 @@
 - **模組化**：將 Core、Messaging、Login 和 Adapters 分離為獨立套件。
 - **框架無關**：可與 Express、Fastify 或標準 Web API 一起使用。
 - **型別安全**：使用 TypeScript 編寫，提供完整的型別定義。
+- **安全性**：時序安全的簽章驗證、輸入驗證、CSRF 保護工具。
 - **開發者友善**：為機器人和登入功能提供簡單、明確的 API。
 
 ## 安裝
@@ -59,18 +60,29 @@ app.listen(3000, () => console.log("Bot running on port 3000"));
 ### LINE Login
 
 ```ts
-import { login } from "@linekit/login";
+import { login, generateAuthUrl, issueAccessToken } from "@linekit/login";
 
-// 驗證來自客戶端的 ID Token
-const user = await login.verify(idToken, channelId);
-console.log(user.name, user.email);
+// 產生含 CSRF 保護的 OAuth URL
+const state = login.generateState();
+const authUrl = generateAuthUrl({
+  channelId: "YOUR_CHANNEL_ID",
+  redirectUri: "https://example.com/callback",
+  state,
+});
+
+// 回調後驗證 state 並交換 token
+if (login.validateState(savedState, returnedState)) {
+  const tokens = await issueAccessToken(channelId, channelSecret, code, redirectUri);
+  const user = await login.verify(tokens.id_token, channelId);
+  console.log(user.name, user.email);
+}
 ```
 
 ## 套件列表
 
-- **@linekit/core**: Webhook 驗證、Context、Router。
-- **@linekit/messaging**: Messaging API 客戶端 (Reply, Push, Multicast)。
-- **@linekit/login**: OAuth 和 ID Token 驗證。
+- **@linekit/core**: Webhook 驗證（時序安全）、Context、Router 含錯誤處理。
+- **@linekit/messaging**: Messaging API 客戶端 (Reply, Push, Multicast, Rich Menu) 含輸入驗證。
+- **@linekit/login**: OAuth 流程、ID Token 驗證、CSRF state 工具。
 - **@linekit/express**: Express.js 的適配器。
 
 ## 文件

@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import * as crypto from "crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 import { SignatureValidationFailedError, JSONParseError } from "./errors.js";
 
 interface WebhookConfig {
@@ -47,31 +47,25 @@ export function createWebhookMiddleware(config: WebhookConfig) {
             }
 
             if (!body) {
-                // Fallback strategy: strictly speaking we need the raw string bytes for signature.
-                // If the framework already parsed it to JSON and discarded raw bytes, we can't strictly verify signature 
-                // without reconstruction (which is flaky).
-                // For now, we assume rawBody string is available or we just read it.
-                // If body is missing, we can't verify.
-                if (req.body && typeof req.body === 'object') {
-                    // Dangerous fallback: stringify. Only works if keys are ordered same way.
-                    // Ideally we throw or warn.
-                    console.warn("linekit: rawBody not found, skipping signature verification is NOT RECOMMENDED. Please ensure raw body is available.");
-                    return next?.();
-                }
-                throw new Error("Missing request body for signature verification");
+                // rawBody is required for signature verification
+                // If the framework already parsed it to JSON and discarded raw bytes, we cannot verify
+                throw new SignatureValidationFailedError("Cannot verify signature: rawBody not available. Please configure your framework to preserve raw body.");
             }
 
             if (!signature) {
                 throw new SignatureValidationFailedError("Missing X-Line-Signature header");
             }
 
-            const hash = crypto
-                .createHmac("sha256", config.channelSecret)
+            const hash = createHmac("sha256", config.channelSecret)
                 .update(body)
                 .digest("base64");
 
-            if (hash !== signature) {
-                // use safe constant time comparison if possible, but string check is standard in many examples.
+            // Use timing-safe comparison to prevent timing attacks
+            const hashBuffer = Buffer.from(hash);
+            const signatureBuffer = Buffer.from(signature);
+
+            if (hashBuffer.length !== signatureBuffer.length ||
+                !timingSafeEqual(hashBuffer, signatureBuffer)) {
                 throw new SignatureValidationFailedError();
             }
 

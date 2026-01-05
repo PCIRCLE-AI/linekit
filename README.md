@@ -12,6 +12,7 @@ A modular integration toolkit for LINE Messaging API, Login, and LIFF.
 - **Modular**: separate packages for Core, Messaging, Login, and Adapters.
 - **Framework Agnostic**: use with Express, Fastify, or standard Web APIs.
 - **Type-Safe**: written in TypeScript with complete definitions.
+- **Secure**: timing-safe signature verification, input validation, CSRF protection helpers.
 - **Developer Friendly**: simple, explicit API for bots and login.
 
 ## Installation
@@ -59,18 +60,29 @@ app.listen(3000, () => console.log("Bot running on port 3000"));
 ### LINE Login
 
 ```ts
-import { login } from "@linekit/login";
+import { login, generateAuthUrl, issueAccessToken } from "@linekit/login";
 
-// Verify ID Token from client
-const user = await login.verify(idToken, channelId);
-console.log(user.name, user.email);
+// Generate OAuth URL with CSRF protection
+const state = login.generateState();
+const authUrl = generateAuthUrl({
+  channelId: "YOUR_CHANNEL_ID",
+  redirectUri: "https://example.com/callback",
+  state,
+});
+
+// After callback, validate state and exchange code for tokens
+if (login.validateState(savedState, returnedState)) {
+  const tokens = await issueAccessToken(channelId, channelSecret, code, redirectUri);
+  const user = await login.verify(tokens.id_token, channelId);
+  console.log(user.name, user.email);
+}
 ```
 
 ## Packages
 
-- **@linekit/core**: Webhook verification, Context, Router.
-- **@linekit/messaging**: Messaging API client (Reply, Push, Multicast).
-- **@linekit/login**: OAuth and ID Token verification.
+- **@linekit/core**: Webhook verification (timing-safe), Context, Router with error handling.
+- **@linekit/messaging**: Messaging API client (Reply, Push, Multicast, Rich Menu) with input validation.
+- **@linekit/login**: OAuth flow, ID Token verification, CSRF state helpers.
 - **@linekit/express**: Adapter for Express.js.
 
 ## Documentation

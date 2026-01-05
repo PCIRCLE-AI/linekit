@@ -133,11 +133,20 @@ export interface PostbackEvent extends EventBase {
     replyToken: string;
     postback: {
         data: string;
-        params?: Record<string, any>;
+        params?: Record<string, string>;
     };
 }
 
 export interface UnknownEvent extends EventBase {
     type: string;
-    [key: string]: any;
+    replyToken?: string;
+    [key: string]: unknown;
+}
+
+// Helper type for events that can be replied to
+export type ReplyableEvent = MessageEvent | FollowEvent | PostbackEvent;
+
+// Type guard for replyable events
+export function isReplyableEvent(event: WebhookEvent): event is ReplyableEvent {
+    return "replyToken" in event && typeof (event as ReplyableEvent).replyToken === "string";
 }

@@ -1,8 +1,17 @@
 import { lineRequest } from "./client.js";
 
+interface RichMenuAction {
+    type: string;
+    label?: string;
+    data?: string;
+    text?: string;
+    uri?: string;
+    [key: string]: string | undefined;
+}
+
 interface RichMenuArea {
     bounds: { x: number; y: number; width: number; height: number };
-    action: { type: string;[key: string]: any };
+    action: RichMenuAction;
 }
 
 interface RichMenu {

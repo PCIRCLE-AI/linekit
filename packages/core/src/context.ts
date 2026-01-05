@@ -1,11 +1,9 @@
 import {
-    replyText,
     replyMessage,
-    pushText,
     pushMessage,
     Message,
 } from "@linekit/messaging";
-import { WebhookEvent, LineAppConfig } from "./types.js";
+import { WebhookEvent, LineAppConfig, isReplyableEvent } from "./types.js";
 
 export class Context {
     public readonly event: WebhookEvent;
@@ -21,7 +19,7 @@ export class Context {
     }
 
     get replyToken(): string | undefined {
-        return (this.event as any).replyToken;
+        return isReplyableEvent(this.event) ? this.event.replyToken : undefined;
     }
 
     public async reply(messages: Message[] | Message) {

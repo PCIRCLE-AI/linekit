@@ -1,3 +1,5 @@
+import { LineLoginError } from "./errors.js";
+
 export interface GenerateAuthUrlOptions {
     channelId: string;
     redirectUri: string;
@@ -8,6 +10,16 @@ export interface GenerateAuthUrlOptions {
 }
 
 export function generateAuthUrl(options: GenerateAuthUrlOptions): string {
+    if (!options.channelId) {
+        throw new LineLoginError("channelId is required", "INVALID_PARAMETER");
+    }
+    if (!options.redirectUri) {
+        throw new LineLoginError("redirectUri is required", "INVALID_PARAMETER");
+    }
+    if (!options.state) {
+        throw new LineLoginError("state is required for CSRF protection", "INVALID_PARAMETER");
+    }
+
     const params = new URLSearchParams();
     params.append('response_type', 'code');
     params.append('client_id', options.channelId);
@@ -36,6 +48,19 @@ export async function issueAccessToken(
     code: string,
     redirectUri: string
 ): Promise<IssueAccessTokenResponse> {
+    if (!channelId) {
+        throw new LineLoginError("channelId is required", "INVALID_PARAMETER");
+    }
+    if (!channelSecret) {
+        throw new LineLoginError("channelSecret is required", "INVALID_PARAMETER");
+    }
+    if (!code) {
+        throw new LineLoginError("authorization code is required", "INVALID_PARAMETER");
+    }
+    if (!redirectUri) {
+        throw new LineLoginError("redirectUri is required", "INVALID_PARAMETER");
+    }
+
     const params = new URLSearchParams();
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
@@ -52,8 +77,12 @@ export async function issueAccessToken(
     });
 
     if (!res.ok) {
-        const err = await res.text();
-        throw new Error(`Failed to issue access token: ${res.statusText} ${err}`);
+        const errorText = await res.text();
+        throw new LineLoginError(
+            `Failed to issue access token: ${res.statusText}`,
+            "TOKEN_ISSUE_FAILED",
+            res.status
+        );
     }
 
     return res.json();
