@@ -357,6 +357,58 @@ app.<span class="function">listen</span>(3000, () => console.<span class="functi
             </div>
         </section>
 
+        <!-- LINE API Compatibility -->
+        <section id="api-compatibility">
+            <h2>LINE API Compatibility</h2>
+            <p>linekit is built against the following LINE API versions:</p>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
+                        <th style="padding: 0.75rem; text-align: left;">API</th>
+                        <th style="padding: 0.75rem; text-align: left;">Version</th>
+                        <th style="padding: 0.75rem; text-align: left;">Reference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.75rem;">Messaging API</td>
+                        <td style="padding: 0.75rem;"><code>v2</code></td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/" style="color: var(--primary);">Documentation</a></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.75rem;">LINE Login</td>
+                        <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/" style="color: var(--primary);">Documentation</a></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.75rem;">LIFF</td>
+                        <td style="padding: 0.75rem;"><code>v2</code></td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/" style="color: var(--primary);">Documentation</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Endpoint Base URLs</h3>
+            <ul>
+                <li><strong>Messaging API:</strong> <code>https://api.line.me/v2/bot/</code></li>
+                <li><strong>LINE Login:</strong> <code>https://api.line.me/oauth2/v2.1/</code></li>
+                <li><strong>Authorization:</strong> <code>https://access.line.me/oauth2/v2.1/</code></li>
+            </ul>
+
+            <h3>API Limits (enforced by linekit)</h3>
+            <div class="package-grid">
+                <div class="package-card">
+                    <h4>Messages per Request</h4>
+                    <p><strong>Maximum 5</strong> message objects per reply/push/multicast request.</p>
+                </div>
+                <div class="package-card">
+                    <h4>Multicast Recipients</h4>
+                    <p><strong>Maximum 500</strong> user IDs per multicast request.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Tutorials -->
         <section id="tutorials">
             <h2>Tutorials</h2>

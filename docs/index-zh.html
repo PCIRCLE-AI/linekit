@@ -283,6 +283,7 @@
                 </li>
                 <li><a href="#api-reference">API 參考</a></li>
                 <li><a href="#security">安全功能</a></li>
+                <li><a href="#api-compatibility">LINE API 相容性</a></li>
             </ul>
         </nav>
 
@@ -846,6 +847,58 @@ console.<span class="function">log</span>(<span class="string">"Rich Menu 已建
                     <li>所有 webhook 端點使用 HTTPS</li>
                     <li>定期更換 access token</li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- LINE API Compatibility -->
+        <section id="api-compatibility">
+            <h2>LINE API 相容性</h2>
+            <p>本工具包基於以下 LINE API 版本開發：</p>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <thead>
+                    <tr style="background: var(--card-bg); border-bottom: 2px solid var(--border);">
+                        <th style="padding: 0.75rem; text-align: left;">API</th>
+                        <th style="padding: 0.75rem; text-align: left;">版本</th>
+                        <th style="padding: 0.75rem; text-align: left;">參考文件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.75rem;">Messaging API</td>
+                        <td style="padding: 0.75rem;"><code>v2</code></td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/messaging-api/" target="_blank" style="color: var(--primary);">文件</a></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 0.75rem;">LINE Login</td>
+                        <td style="padding: 0.75rem;"><code>v2.1</code> (OAuth 2.1)</td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/line-login/" target="_blank" style="color: var(--primary);">文件</a></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem;">LIFF</td>
+                        <td style="padding: 0.75rem;"><code>v2</code></td>
+                        <td style="padding: 0.75rem;"><a href="https://developers.line.biz/en/reference/liff/" target="_blank" style="color: var(--primary);">文件</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>API 端點 Base URL</h3>
+            <ul>
+                <li><strong>Messaging API：</strong><code>https://api.line.me/v2/bot/</code></li>
+                <li><strong>LINE Login：</strong><code>https://api.line.me/oauth2/v2.1/</code></li>
+                <li><strong>授權：</strong><code>https://access.line.me/oauth2/v2.1/</code></li>
+            </ul>
+
+            <h3>API 限制（由 linekit 強制執行）</h3>
+            <div class="package-grid">
+                <div class="package-card">
+                    <h4>每次請求訊息數</h4>
+                    <p>最多 <strong>5 則訊息</strong>（reply、push、multicast）</p>
+                </div>
+                <div class="package-card">
+                    <h4>Multicast 收件人數</h4>
+                    <p>每次請求最多 <strong>500 位收件人</strong></p>
+                </div>
             </div>
         </section>
 
