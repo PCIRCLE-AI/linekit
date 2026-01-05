@@ -87,6 +87,8 @@ if (login.validateState(savedState, returnedState)) {
 
 ## Documentation
 
+📚 **[Full Tutorials & API Reference](https://pcircle-ai.github.io/linekit/)** - Comprehensive guides with flow diagrams
+
 - [User Guide](docs/usage-guide.md): Detailed usage instructions and code examples.
 - [Architecture](docs/architecture.md): System overview and component breakdown.
 - [Design Principles](docs/design-principles.md): Core philosophies behind the toolkit.

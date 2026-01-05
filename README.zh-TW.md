@@ -87,6 +87,8 @@ if (login.validateState(savedState, returnedState)) {
 
 ## 文件
 
+📚 **[完整教學與 API 參考](https://pcircle-ai.github.io/linekit/index-zh.html)** - 附流程圖的詳細指南
+
 - [使用指南](docs/usage-guide.md): 詳細的使用說明和程式碼範例。
 - [架構說明](docs/architecture.md): 系統概觀和元件細節。
 - [設計原則](docs/design-principles.md): 工具包背後的核心理念。
