@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>linekit - 現代化 LINE 開發工具包</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #06C755;
+            --text: #111827;
+            --bg: #ffffff;
+            --gray: #6B7280;
+            --code-bg: #f3f4f6;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #06C755 0%, #00B900 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--gray);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-title {
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .lang-switch a {
+            color: var(--gray);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 600;
+        }
+
+        .lang-switch a.active {
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="lang-switch">
+        <a href="index.html">English</a>
+        <a href="index-zh.html" class="active">繁體中文</a>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>linekit</h1>
+            <div class="subtitle">模組化、跨框架的 LINE 服務開發工具包。</div>
+            <div class="buttons">
+                <a href="#get-started" class="btn btn-primary">開始使用</a>
+                <a href="https://github.com/ktseng/linekit" class="btn btn-outline">GitHub</a>
+            </div>
+        </header>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-title">模組化</div>
+                <div>只需安裝你需要的：Core、Messaging 或 Login。</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">型別安全</div>
+                <div>完全使用 TypeScript 構建，提供卓越的開發體驗。</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">框架無關</div>
+                <div>支援 Express、Fastify、Next.js 或標準 Fetch API。</div>
+            </div>
+        </section>
+
+        <section id="get-started">
+            <h2>安裝</h2>
+            <pre><code>npm install @linekit/core @linekit/messaging @linekit/adapters-express</code></pre>
+
+            <h2>快速範例</h2>
+            <pre><code>import { createLineApp } from "@linekit/core";
+import { lineMiddleware } from "@linekit/express";
+
+const line = createLineApp({ /* credentials */ });
+
+app.post("/webhook", 
+  lineMiddleware(config),
+  line.router({
+    message: async (ctx) => {
+      await ctx.replyText("哈囉！這是來自 linekit 的訊息！");
+    }
+  })
+);</code></pre>
+        </section>
+
+        <footer>
+            <p>MIT License &copy; 2024 linekit</p>
+        </footer>
+    </div>
+</body>
+
+</html>

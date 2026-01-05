@@ -2,6 +2,8 @@
 
 A modular integration toolkit for LINE Messaging API, Login, and LIFF.
 
+[English](README.md) | [繁體中文](README.zh-TW.md)
+
 ## Features
 
 - **Modular**: separate packages for Core, Messaging, Login, and Adapters.
