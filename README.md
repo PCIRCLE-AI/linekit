@@ -62,47 +62,66 @@ app.listen(3000, () => console.log("Bot running on port 3000"));
 ```ts
 import { login, generateAuthUrl, issueAccessToken } from "@linekit/login";
 
-// 產生含 CSRF 保護的 OAuth URL
+// Generate OAuth URL with CSRF protection
 const state = login.generateState();
 const authUrl = generateAuthUrl({
   channelId: "YOUR_CHANNEL_ID",
   redirectUri: "https://example.com/callback",
   state,
+  scope: ["profile", "openid", "email"],
 });
 
-// 回調後驗證 state 並交換 token
+// Callback handling
 if (login.validateState(savedState, returnedState)) {
-  const tokens = await issueAccessToken(channelId, channelSecret, code, redirectUri);
-  const user = await login.verify(tokens.id_token, channelId);
+  const tokens = await issueAccessToken(process.env.CHANNEL_ID!, process.env.CHANNEL_SECRET!, code, redirectUri);
+  const user = await login.verify(tokens.id_token!, process.env.CHANNEL_ID!);
   console.log(user.name, user.email);
 }
 ```
 
-## 套件列表
+### LIFF Management
 
-- **@linekit/core**: Webhook 驗證（時序安全）、Context、Router 含錯誤處理。
-- **@linekit/messaging**: Messaging API 客戶端 (Reply, Push, Multicast, Rich Menu) 含輸入驗證。
-- **@linekit/login**: OAuth 流程、ID Token 驗證、CSRF state 工具。
-- **@linekit/express**: Express.js 的適配器。
+```ts
+import { LiffClient } from "@linekit/liff";
 
-## LINE API 相容性
+const client = new LiffClient({
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN!,
+});
 
-本工具包基於以下 LINE API 版本開發：
+// Manage LIFF apps server-side
+const apps = await client.getAll();
+const { liffId } = await client.add({
+  view: { type: "full", url: "https://mysite.com" }
+});
+```
 
-| API | 版本 | 參考文件 |
-|-----|------|---------|
-| Messaging API | v2 | [文件](https://developers.line.biz/en/reference/messaging-api/) |
-| LINE Login | v2.1 (OAuth 2.1) | [文件](https://developers.line.biz/en/reference/line-login/) |
-| LIFF | v2 | [文件](https://developers.line.biz/en/reference/liff/) |
+## Packages
 
-**API 端點 Base URL：**
-- Messaging API: `https://api.line.me/v2/bot/`
-- LINE Login: `https://api.line.me/oauth2/v2.1/`
-- 授權: `https://access.line.me/oauth2/v2.1/`
+- **@linekit/core**: Webhook signature verification, Context, Router.
+- **@linekit/messaging**: Messaging API client (Reply, Push, Multicast) with validation.
+- **@linekit/login**: OAuth 2.1 flow, ID Token verification, State management.
+- **@linekit/liff**: Server-side LIFF app management (CRUD).
+- **@linekit/express**: Express.js middleware adapter.
 
-**API 限制（由 linekit 強制執行）：**
-- 每次請求最多 5 則訊息
-- 每次 multicast 請求最多 500 位收件人
+## API Compatibility
+
+Built for:
+
+| API | Version | Reference |
+| :--- | :--- | :--- |
+| Messaging API | v2 | [Docs](https://developers.line.biz/en/reference/messaging-api/) |
+| LINE Login | v2.1 | [Docs](https://developers.line.biz/en/reference/line-login/) |
+| LIFF | v1 (Mgmt) | [Docs](https://developers.line.biz/en/reference/liff-server/) |
+
+**Base URLs:**
+
+- Messaging: `https://api.line.me/v2/bot/`
+- Login: `https://api.line.me/oauth2/v2.1/`
+- LIFF Mgmt: `https://api.line.me/liff/v1/`
+
+**Safety & Limits:**
+
+- Automating batch size limits (5 msgs/req, 500 users/multicast).
 
 ## 文件
 

@@ -1,14 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { VERSION, init } from "./index.js";
+import { VERSION, LiffClient } from "./index.js";
 
 describe("@linekit/liff", () => {
     it("should export VERSION", () => {
-        expect(VERSION).toBe("0.0.1");
+        expect(VERSION).toBe("0.1.0");
     });
 
-    it("should throw not implemented error when calling init", () => {
-        expect(() => init({ liffId: "test-liff-id" })).toThrow(
-            "@linekit/liff is not yet implemented"
-        );
+    it("should export LiffClient", () => {
+        expect(LiffClient).toBeDefined();
     });
 });

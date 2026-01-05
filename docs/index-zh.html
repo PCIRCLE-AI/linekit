@@ -436,6 +436,7 @@
             <li><a href="#tutorial-login">LINE Login 整合</a></li>
             <li><a href="#tutorial-messages">發送訊息類型</a></li>
             <li><a href="#tutorial-richmenu">Rich Menu 管理</a></li>
+            <li><a href="#tutorial-liff">LIFF App 管理</a></li>
             <li><a href="#tutorial-errors">錯誤處理</a></li>
           </ul>
         </li>
@@ -516,7 +517,7 @@ app.<span class="function">listen</span>(3000, () => console.<span class="functi
         </div>
         <div class="package-card">
           <h4>@linekit/liff</h4>
-          <p>LIFF 管理 API 客戶端（CRUD）以及 LIFF App 開發所需的型別定義。</p>
+          <p>伺服器端 LIFF App 管理 (CRUD) 與型別定義。</p>
         </div>
       </div>
     </section>
@@ -949,6 +950,30 @@ console.<span class="function">log</span>(<span class="string">"Rich Menu 已建
     <span class="comment">// 記錄到監控服務、發送警報等</span>
   }
 });</code></pre>
+      </article>
+
+      </article>
+
+      <!-- Tutorial: LIFF -->
+      <article id="tutorial-liff">
+        <h3>7. LIFF App 管理</h3>
+        <p>從伺服器端透過程式碼新增與管理 LIFF App。</p>
+
+        <pre><code><span class="keyword">import</span> { LiffClient } <span class="keyword">from</span> <span class="string">"@linekit/liff"</span>;
+
+<span class="keyword">const</span> client = <span class="keyword">new</span> <span class="function">LiffClient</span>({
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+});
+
+<span class="comment">// 建立新的 LIFF App</span>
+<span class="keyword">const</span> { liffId } = <span class="keyword">await</span> client.<span class="function">add</span>({
+  view: {
+    type: <span class="string">"full"</span>,
+    url: <span class="string">"https://mysite.com/app"</span>
+  }
+});
+
+console.<span class="function">log</span>(<span class="string">"已建立 LIFF App: https://liff.line.me/"</span> + liffId);</code></pre>
       </article>
 
       <!-- Tutorial: Marketing Push -->
