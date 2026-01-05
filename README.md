@@ -2,6 +2,9 @@
 
 A modular integration toolkit for LINE Messaging API, Login, and LIFF.
 
+[![Website](https://img.shields.io/badge/Website-pcircle--ai.github.io%2Flinekit-06C755)](https://pcircle-ai.github.io/linekit/)
+[![GitHub](https://img.shields.io/github/stars/PCIRCLE-AI/linekit?style=social)](https://github.com/PCIRCLE-AI/linekit)
+
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
 ## Features

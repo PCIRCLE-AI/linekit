@@ -2,6 +2,9 @@
 
 一個用於整合 LINE Messaging API、Login 和 LIFF 的模組化整合工具包。
 
+[![網站](https://img.shields.io/badge/網站-pcircle--ai.github.io%2Flinekit-06C755)](https://pcircle-ai.github.io/linekit/)
+[![GitHub](https://img.shields.io/github/stars/PCIRCLE-AI/linekit?style=social)](https://github.com/PCIRCLE-AI/linekit)
+
 [English](README.md) | [繁體中文](README.zh-TW.md)
 
 ## 特色
